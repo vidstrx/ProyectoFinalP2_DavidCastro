@@ -28,12 +28,58 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         panelCreacionUsuario = new javax.swing.JPanel();
+        lblCreacionUser = new javax.swing.JLabel();
+        lblIcono = new javax.swing.JLabel();
+        lblContrasena = new javax.swing.JLabel();
+        lblNombre = new javax.swing.JLabel();
+        txtNombre = new javax.swing.JTextField();
+        txtContrasena = new javax.swing.JTextField();
+        btnCrearUser = new javax.swing.JButton();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelCreacionUsuario.setPreferredSize(new java.awt.Dimension(507, 600));
         panelCreacionUsuario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblCreacionUser.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblCreacionUser.setForeground(new java.awt.Color(255, 255, 255));
+        lblCreacionUser.setText("Creacion de usuario");
+        panelCreacionUsuario.add(lblCreacionUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 230, -1));
+
+        lblIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono inicio sesion.jpg"))); // NOI18N
+        lblIcono.setPreferredSize(new java.awt.Dimension(140, 140));
+        panelCreacionUsuario.add(lblIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
+
+        lblContrasena.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblContrasena.setForeground(new java.awt.Color(255, 255, 255));
+        lblContrasena.setText("Contraseña:");
+        panelCreacionUsuario.add(lblContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 390, -1, 30));
+
+        lblNombre.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblNombre.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombre.setText("Nombre:");
+        panelCreacionUsuario.add(lblNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 330, -1, 30));
+
+        txtNombre.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtNombre.setForeground(new java.awt.Color(0, 0, 0));
+        panelCreacionUsuario.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 250, 30));
+
+        txtContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtContrasena.setForeground(new java.awt.Color(0, 0, 0));
+        panelCreacionUsuario.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 250, 30));
+
+        btnCrearUser.setBackground(new java.awt.Color(0, 0, 0));
+        btnCrearUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCrearUser.setForeground(new java.awt.Color(255, 255, 255));
+        btnCrearUser.setText("Crear Usuario");
+        btnCrearUser.setBorder(null);
+        btnCrearUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCrearUserMouseClicked(evt);
+            }
+        });
+        panelCreacionUsuario.add(btnCrearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 460, 130, 40));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo login.jpg"))); // NOI18N
         lblFondo.setPreferredSize(new java.awt.Dimension(507, 600));
@@ -56,6 +102,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCrearUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearUserMouseClicked
+        
+    }//GEN-LAST:event_btnCrearUserMouseClicked
 
     /**
      * @param args the command line arguments
@@ -93,7 +143,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCrearUser;
+    private javax.swing.JLabel lblContrasena;
+    private javax.swing.JLabel lblCreacionUser;
     private javax.swing.JLabel lblFondo;
+    private javax.swing.JLabel lblIcono;
+    private javax.swing.JLabel lblNombre;
     private javax.swing.JPanel panelCreacionUsuario;
+    private javax.swing.JTextField txtContrasena;
+    private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }
