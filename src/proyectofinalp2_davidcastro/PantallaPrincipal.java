@@ -1,21 +1,20 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package proyectofinalp2_davidcastro;
 
-/**
- *
- * @author Samuel-Josue
- */
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 public class PantallaPrincipal extends javax.swing.JFrame {
 
     /**
      * Creates new form PantallaPrincipal
      */
+    static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     public PantallaPrincipal() {
+        usuarios.add(new Administrador("admin", "1234"));
         initComponents();
         setLocationRelativeTo(null);
+        //System.out.println(usuarios);
     }
 
     /**
@@ -28,13 +27,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         panelCreacionUsuario = new javax.swing.JPanel();
-        lblCreacionUser = new javax.swing.JLabel();
+        lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
         lblContrasena = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
         txtContrasena = new javax.swing.JTextField();
-        btnCrearUser = new javax.swing.JButton();
+        btnIniciarSesion = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -42,13 +42,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         panelCreacionUsuario.setPreferredSize(new java.awt.Dimension(507, 600));
         panelCreacionUsuario.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblCreacionUser.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblCreacionUser.setForeground(new java.awt.Color(255, 255, 255));
-        lblCreacionUser.setText("Creacion de usuario");
-        panelCreacionUsuario.add(lblCreacionUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 230, -1));
+        lblInicioSesion.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblInicioSesion.setForeground(new java.awt.Color(255, 255, 255));
+        lblInicioSesion.setText("Inicio de sesion");
+        panelCreacionUsuario.add(lblInicioSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 180, -1));
 
         lblIcono.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono inicio sesion.jpg"))); // NOI18N
-        lblIcono.setPreferredSize(new java.awt.Dimension(140, 140));
         panelCreacionUsuario.add(lblIcono, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 120, -1, -1));
 
         lblContrasena.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
@@ -69,20 +68,24 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         txtContrasena.setForeground(new java.awt.Color(0, 0, 0));
         panelCreacionUsuario.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 250, 30));
 
-        btnCrearUser.setBackground(new java.awt.Color(0, 0, 0));
-        btnCrearUser.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCrearUser.setForeground(new java.awt.Color(255, 255, 255));
-        btnCrearUser.setText("Crear Usuario");
-        btnCrearUser.setBorder(null);
-        btnCrearUser.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnIniciarSesion.setBackground(new java.awt.Color(0, 0, 0));
+        btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
+        btnIniciarSesion.setText("Iniciar sesion");
+        btnIniciarSesion.setBorder(null);
+        btnIniciarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnCrearUserMouseClicked(evt);
+                btnIniciarSesionMouseClicked(evt);
             }
         });
-        panelCreacionUsuario.add(btnCrearUser, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 460, 130, 40));
+        panelCreacionUsuario.add(btnIniciarSesion, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 460, 130, 40));
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 51, 51));
+        jLabel1.setText("Si es primera vez, utiliza (Nombre = admin / Contraseña = 1234) para poder entrar.");
+        panelCreacionUsuario.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 470, -1));
 
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo login.jpg"))); // NOI18N
-        lblFondo.setPreferredSize(new java.awt.Dimension(507, 600));
         panelCreacionUsuario.add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -103,9 +106,15 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnCrearUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCrearUserMouseClicked
-        
-    }//GEN-LAST:event_btnCrearUserMouseClicked
+    private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
+        if (verificarUsuario(txtNombre.getText(), txtContrasena.getText())){
+            
+            //JOptionPane.showMessageDialog(this, "Sesion iniciada");
+        } else {
+            
+            //JOptionPane.showMessageDialog(this, "No existe ese usuario");
+        }
+    }//GEN-LAST:event_btnIniciarSesionMouseClicked
 
     /**
      * @param args the command line arguments
@@ -141,13 +150,27 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
     }
+    
+    private boolean verificarUsuario(String nombre, String contrasena){
+        boolean isUsuario = true;
+        for (Usuario usuario : usuarios) {
+            if (nombre.equals(usuario.getNombre()) && contrasena.equals(usuario.getContrasena())){
+                isUsuario = true;
+                break;
+            } else {
+                isUsuario = false;
+            }
+        }
+        return isUsuario;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCrearUser;
+    private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblContrasena;
-    private javax.swing.JLabel lblCreacionUser;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblIcono;
+    private javax.swing.JLabel lblInicioSesion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JPanel panelCreacionUsuario;
     private javax.swing.JTextField txtContrasena;
