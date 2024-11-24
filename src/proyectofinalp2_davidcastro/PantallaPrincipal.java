@@ -26,6 +26,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        frameSistemaOperativo = new javax.swing.JFrame();
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        panelInicio = new javax.swing.JPanel();
+        lblFotoEditorTexto = new javax.swing.JLabel();
+        lblEditorTexto = new javax.swing.JLabel();
+        lblFotoExploradorArchivos = new javax.swing.JLabel();
+        lblExploradorArchivo = new javax.swing.JLabel();
+        lblInicio = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
+        mBarPrincipal = new javax.swing.JMenuBar();
+        menuCrearUsuario = new javax.swing.JMenu();
+        menuLogout = new javax.swing.JMenu();
         panelCreacionUsuario = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -36,6 +48,63 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnIniciarSesion = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
+
+        frameSistemaOperativo.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        panelInicio.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblFotoEditorTexto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/editor de texto.png"))); // NOI18N
+        lblFotoEditorTexto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        panelInicio.add(lblFotoEditorTexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 140, 140));
+
+        lblEditorTexto.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        lblEditorTexto.setForeground(new java.awt.Color(255, 255, 255));
+        lblEditorTexto.setText("Editor de Texto");
+        panelInicio.add(lblEditorTexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 300, 110, -1));
+
+        lblFotoExploradorArchivos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/explorador archivos.png"))); // NOI18N
+        lblFotoExploradorArchivos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        panelInicio.add(lblFotoExploradorArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 140, 140));
+
+        lblExploradorArchivo.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        lblExploradorArchivo.setForeground(new java.awt.Color(255, 255, 255));
+        lblExploradorArchivo.setText("Explorador de Archivos");
+        panelInicio.add(lblExploradorArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 300, 150, -1));
+
+        lblInicio.setBackground(new java.awt.Color(102, 102, 102));
+        lblInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblInicio.setOpaque(true);
+        panelInicio.add(lblInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 560));
+
+        jTabbedPane1.addTab("tab1", panelInicio);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 555, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab2", jPanel2);
+
+        frameSistemaOperativo.getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 1000, 590));
+
+        menuCrearUsuario.setText("Crear Usuario");
+        mBarPrincipal.add(menuCrearUsuario);
+
+        menuLogout.setText("Logout");
+        menuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuLogoutMouseClicked(evt);
+            }
+        });
+        mBarPrincipal.add(menuLogout);
+
+        frameSistemaOperativo.setJMenuBar(mBarPrincipal);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -108,13 +177,24 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
         if (verificarUsuario(txtNombre.getText(), txtContrasena.getText())){
+            txtNombre.setText("");
+            txtContrasena.setText("");
             
+            frameSistemaOperativo.pack();
+            frameSistemaOperativo.setVisible(true);
+            frameSistemaOperativo.setLocationRelativeTo(this);
+            dispose();
             //JOptionPane.showMessageDialog(this, "Sesion iniciada");
         } else {
             
             //JOptionPane.showMessageDialog(this, "No existe ese usuario");
         }
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
+
+    private void menuLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseClicked
+        frameSistemaOperativo.dispose();
+        setVisible(true);
+    }//GEN-LAST:event_menuLogoutMouseClicked
 
     /**
      * @param args the command line arguments
@@ -163,16 +243,55 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         }
         return isUsuario;
     }
-
+    
+    /*private void barraDeProgreso() {
+        frameProgressBar.pack();
+        frameProgressBar.setVisible(true); 
+        frameProgressBar.setLocationRelativeTo(this);
+        int contador = 0;
+        System.out.println(frameProgressBar.isVisible());
+        Thread thread = new Thread() {
+            public void run() {
+                pBarCarga.setValue(0);
+                while (pBarCarga.getValue() < 100) {
+                    pBarCarga.setValue(pBarCarga.getValue() + 5);
+                    try {
+                        Thread.sleep(50);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (pBarCarga.getValue() == 100){
+                        frameProgressBar.setVisible(false);
+                        frameProgressBar.dispose();
+                    }
+                }
+            }
+        };
+        thread.start();
+        
+    }*/
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JFrame frameSistemaOperativo;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblContrasena;
+    private javax.swing.JLabel lblEditorTexto;
+    private javax.swing.JLabel lblExploradorArchivo;
     private javax.swing.JLabel lblFondo;
+    private javax.swing.JLabel lblFotoEditorTexto;
+    private javax.swing.JLabel lblFotoExploradorArchivos;
     private javax.swing.JLabel lblIcono;
+    private javax.swing.JLabel lblInicio;
     private javax.swing.JLabel lblInicioSesion;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JMenuBar mBarPrincipal;
+    private javax.swing.JMenu menuCrearUsuario;
+    private javax.swing.JMenu menuLogout;
     private javax.swing.JPanel panelCreacionUsuario;
+    private javax.swing.JPanel panelInicio;
     private javax.swing.JTextField txtContrasena;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
