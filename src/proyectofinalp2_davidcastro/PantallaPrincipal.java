@@ -1,7 +1,10 @@
 
 package proyectofinalp2_davidcastro;
 
+import java.awt.Font;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 
 public class PantallaPrincipal extends javax.swing.JFrame {
@@ -9,10 +12,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     /**
      * Creates new form PantallaPrincipal
      */
-    static ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+    
+    private String [] fuentes;
+    private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+    
     public PantallaPrincipal() {
+        
         usuarios.add(new Administrador("admin", "1234"));
+        fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+        
         initComponents();
+        
+        agregarElementos();
         setLocationRelativeTo(null);
         //System.out.println(usuarios);
     }
@@ -29,12 +40,22 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         frameSistemaOperativo = new javax.swing.JFrame();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         panelInicio = new javax.swing.JPanel();
-        lblFotoEditorTexto = new javax.swing.JLabel();
+        lblIconoEditorTexto = new javax.swing.JLabel();
         lblEditorTexto = new javax.swing.JLabel();
         lblFotoExploradorArchivos = new javax.swing.JLabel();
         lblExploradorArchivo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         lblInicio = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        panelEditorTexto = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaEditorTexto = new javax.swing.JTextArea();
+        btnAtrasEditorTexto = new javax.swing.JButton();
+        comboTamano = new javax.swing.JComboBox<>();
+        comboFuentes = new javax.swing.JComboBox<>();
+        comboEstilos = new javax.swing.JComboBox<>();
+        lblTamano = new javax.swing.JLabel();
+        lblFuente = new javax.swing.JLabel();
+        lblEstilo = new javax.swing.JLabel();
         mBarPrincipal = new javax.swing.JMenuBar();
         menuCrearUsuario = new javax.swing.JMenu();
         menuLogout = new javax.swing.JMenu();
@@ -53,9 +74,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         panelInicio.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        lblFotoEditorTexto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/editor de texto.png"))); // NOI18N
-        lblFotoEditorTexto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        panelInicio.add(lblFotoEditorTexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 140, 140));
+        lblIconoEditorTexto.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/editor de texto.png"))); // NOI18N
+        lblIconoEditorTexto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblIconoEditorTexto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblIconoEditorTextoMouseClicked(evt);
+            }
+        });
+        panelInicio.add(lblIconoEditorTexto, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 140, 140));
 
         lblEditorTexto.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         lblEditorTexto.setForeground(new java.awt.Color(255, 255, 255));
@@ -71,6 +97,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblExploradorArchivo.setText("Explorador de Archivos");
         panelInicio.add(lblExploradorArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 300, 150, -1));
 
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Pantalla de Inicio");
+        panelInicio.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 300, 50));
+
         lblInicio.setBackground(new java.awt.Color(102, 102, 102));
         lblInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblInicio.setOpaque(true);
@@ -78,18 +109,108 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("tab1", panelInicio);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1000, Short.MAX_VALUE)
+        txtAreaEditorTexto.setColumns(20);
+        txtAreaEditorTexto.setRows(5);
+        jScrollPane1.setViewportView(txtAreaEditorTexto);
+
+        btnAtrasEditorTexto.setBackground(new java.awt.Color(102, 0, 0));
+        btnAtrasEditorTexto.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnAtrasEditorTexto.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtrasEditorTexto.setText("Atras");
+        btnAtrasEditorTexto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnAtrasEditorTextoMouseClicked(evt);
+            }
+        });
+
+        comboTamano.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "..." }));
+        comboTamano.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboTamanoItemStateChanged(evt);
+            }
+        });
+
+        comboFuentes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "..." }));
+        comboFuentes.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboFuentesItemStateChanged(evt);
+            }
+        });
+
+        comboEstilos.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "...", "Normal", "Negrita", "Cursiva" }));
+        comboEstilos.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                comboEstilosItemStateChanged(evt);
+            }
+        });
+
+        lblTamano.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblTamano.setForeground(new java.awt.Color(0, 0, 0));
+        lblTamano.setText("Tamaño");
+
+        lblFuente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblFuente.setForeground(new java.awt.Color(0, 0, 0));
+        lblFuente.setText("Fuentes");
+
+        lblEstilo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblEstilo.setForeground(new java.awt.Color(0, 0, 0));
+        lblEstilo.setText("Estilo");
+
+        javax.swing.GroupLayout panelEditorTextoLayout = new javax.swing.GroupLayout(panelEditorTexto);
+        panelEditorTexto.setLayout(panelEditorTextoLayout);
+        panelEditorTextoLayout.setHorizontalGroup(
+            panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditorTextoLayout.createSequentialGroup()
+                .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelEditorTextoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btnAtrasEditorTexto))
+                    .addGroup(panelEditorTextoLayout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboTamano, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTamano, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(comboFuentes, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblFuente, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(panelEditorTextoLayout.createSequentialGroup()
+                        .addGap(87, 87, 87)
+                        .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(comboEstilos, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(panelEditorTextoLayout.createSequentialGroup()
+                                .addComponent(lblEstilo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(78, 78, 78)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 555, Short.MAX_VALUE)
+        panelEditorTextoLayout.setVerticalGroup(
+            panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEditorTextoLayout.createSequentialGroup()
+                .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelEditorTextoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1))
+                    .addGroup(panelEditorTextoLayout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblTamano)
+                            .addComponent(lblFuente))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(panelEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(comboTamano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboFuentes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(lblEstilo)
+                        .addGap(4, 4, 4)
+                        .addComponent(comboEstilos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 330, Short.MAX_VALUE)
+                        .addComponent(btnAtrasEditorTexto)))
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("tab2", jPanel2);
+        jTabbedPane1.addTab("tab2", panelEditorTexto);
 
         frameSistemaOperativo.getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 1000, 590));
 
@@ -196,6 +317,45 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         setVisible(true);
     }//GEN-LAST:event_menuLogoutMouseClicked
 
+    private void lblIconoEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoMouseClicked
+        jTabbedPane1.setSelectedIndex(1);
+    }//GEN-LAST:event_lblIconoEditorTextoMouseClicked
+
+    private void btnAtrasEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasEditorTextoMouseClicked
+        jTabbedPane1.setSelectedIndex(0);
+    }//GEN-LAST:event_btnAtrasEditorTextoMouseClicked
+
+    private void comboTamanoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboTamanoItemStateChanged
+        int tamano = Integer.parseInt(comboTamano.getSelectedItem()+"");
+        String nombre = txtAreaEditorTexto.getFont().getFontName();
+        int estilo = txtAreaEditorTexto.getFont().getStyle();
+        txtAreaEditorTexto.setFont(new Font(nombre, estilo, tamano));
+    }//GEN-LAST:event_comboTamanoItemStateChanged
+
+    private void comboFuentesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboFuentesItemStateChanged
+        int tamano = txtAreaEditorTexto.getFont().getSize();
+        String nombre = comboFuentes.getSelectedItem()+"";
+        int estilo = txtAreaEditorTexto.getFont().getStyle();
+        txtAreaEditorTexto.setFont(new Font(nombre, estilo, tamano));
+    }//GEN-LAST:event_comboFuentesItemStateChanged
+
+    private void comboEstilosItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboEstilosItemStateChanged
+        int tamano = txtAreaEditorTexto.getFont().getSize();
+        String nombre = txtAreaEditorTexto.getFont().getFontName();
+        int estilo = comboEstilos.getSelectedIndex();
+        switch (estilo){
+            case 1:
+                txtAreaEditorTexto.setFont(new Font(nombre, Font.PLAIN, tamano));
+                break;
+            case 2:
+                txtAreaEditorTexto.setFont(new Font(nombre, Font.BOLD, tamano));
+                break;
+            case 3:
+                txtAreaEditorTexto.setFont(new Font(nombre, Font.ITALIC, tamano));
+                break;
+        }
+    }//GEN-LAST:event_comboEstilosItemStateChanged
+
     /**
      * @param args the command line arguments
      */
@@ -244,6 +404,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         return isUsuario;
     }
     
+    private void agregarElementos(){
+        for (int i = 10; i <= 60; i+=2) {
+            comboTamano.addItem(i+"");
+        }
+        for (int i = 0; i < fuentes.length; i++) {
+            comboFuentes.addItem(fuentes[i]);
+        }
+        
+    }
+    
     /*private void barraDeProgreso() {
         frameProgressBar.pack();
         frameProgressBar.setVisible(true); 
@@ -272,26 +442,36 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }*/
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAtrasEditorTexto;
     private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JComboBox<String> comboEstilos;
+    private javax.swing.JComboBox<String> comboFuentes;
+    private javax.swing.JComboBox<String> comboTamano;
     private javax.swing.JFrame frameSistemaOperativo;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblEditorTexto;
+    private javax.swing.JLabel lblEstilo;
     private javax.swing.JLabel lblExploradorArchivo;
     private javax.swing.JLabel lblFondo;
-    private javax.swing.JLabel lblFotoEditorTexto;
     private javax.swing.JLabel lblFotoExploradorArchivos;
+    private javax.swing.JLabel lblFuente;
     private javax.swing.JLabel lblIcono;
+    private javax.swing.JLabel lblIconoEditorTexto;
     private javax.swing.JLabel lblInicio;
     private javax.swing.JLabel lblInicioSesion;
     private javax.swing.JLabel lblNombre;
+    private javax.swing.JLabel lblTamano;
     private javax.swing.JMenuBar mBarPrincipal;
     private javax.swing.JMenu menuCrearUsuario;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JPanel panelCreacionUsuario;
+    private javax.swing.JPanel panelEditorTexto;
     private javax.swing.JPanel panelInicio;
+    private javax.swing.JTextArea txtAreaEditorTexto;
     private javax.swing.JTextField txtContrasena;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
