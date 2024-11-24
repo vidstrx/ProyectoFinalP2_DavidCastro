@@ -411,7 +411,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         for (int i = 0; i < fuentes.length; i++) {
             comboFuentes.addItem(fuentes[i]);
         }
-        
+    }
+    
+    private Usuario usuarioActual(String nombre, String contrasena){
+        Usuario usuario = new Usuario();
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getNombre().equals(nombre) && usuarios.get(i).getContrasena().equals(contrasena)){
+                usuario = usuarios.get(i);
+                break;
+            }
+        }
+        return usuario;
     }
     
     /*private void barraDeProgreso() {
