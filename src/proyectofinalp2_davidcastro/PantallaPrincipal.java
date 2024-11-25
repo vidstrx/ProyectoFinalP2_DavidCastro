@@ -38,7 +38,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         frameSistemaOperativo = new javax.swing.JFrame();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
         panelInicio = new javax.swing.JPanel();
         lblIconoEditorTexto = new javax.swing.JLabel();
         lblEditorTexto = new javax.swing.JLabel();
@@ -46,16 +45,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblExploradorArchivo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblInicio = new javax.swing.JLabel();
-        panelEditorTexto = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtAreaEditorTexto = new javax.swing.JTextArea();
-        btnAtrasEditorTexto = new javax.swing.JButton();
-        comboTamano = new javax.swing.JComboBox<>();
-        comboFuentes = new javax.swing.JComboBox<>();
-        comboEstilos = new javax.swing.JComboBox<>();
-        lblTamano = new javax.swing.JLabel();
-        lblFuente = new javax.swing.JLabel();
-        lblEstilo = new javax.swing.JLabel();
         mBarPrincipal = new javax.swing.JMenuBar();
         menuOpcionesUsuario = new javax.swing.JMenu();
         mItemCrearUsuario = new javax.swing.JMenuItem();
@@ -63,6 +52,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         mItemEliminarUsuario = new javax.swing.JMenuItem();
         menuPersonalizar = new javax.swing.JMenu();
         menuLogout = new javax.swing.JMenu();
+        menuApagar = new javax.swing.JMenu();
         dialCrearUsuario = new javax.swing.JDialog();
         lblCrearUsuario = new javax.swing.JLabel();
         lblContrasenaCU = new javax.swing.JLabel();
@@ -74,6 +64,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnCancelarCU = new javax.swing.JButton();
         btnCrearUsuario = new javax.swing.JButton();
         lblIconoCrearUsuario = new javax.swing.JLabel();
+        dialEditorTexto = new javax.swing.JDialog();
+        panelEditorTexto = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaEditorTexto = new javax.swing.JTextArea();
+        btnAtrasEditorTexto = new javax.swing.JButton();
+        comboTamano = new javax.swing.JComboBox<>();
+        comboFuentes = new javax.swing.JComboBox<>();
+        comboEstilos = new javax.swing.JComboBox<>();
+        lblTamano = new javax.swing.JLabel();
+        lblFuente = new javax.swing.JLabel();
+        lblEstilo = new javax.swing.JLabel();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -84,8 +85,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnIniciarSesion = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         lblFondo = new javax.swing.JLabel();
-
-        frameSistemaOperativo.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelInicio.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -115,14 +114,139 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Pantalla de Inicio");
-        panelInicio.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 300, 50));
+        panelInicio.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 300, 50));
 
         lblInicio.setBackground(new java.awt.Color(102, 102, 102));
         lblInicio.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblInicio.setOpaque(true);
-        panelInicio.add(lblInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 560));
+        panelInicio.add(lblInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 540));
 
-        jTabbedPane1.addTab("tab1", panelInicio);
+        mBarPrincipal.setBackground(new java.awt.Color(255, 255, 255));
+        mBarPrincipal.setForeground(new java.awt.Color(0, 0, 0));
+        mBarPrincipal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+
+        menuOpcionesUsuario.setText("Opciones de Usuario");
+
+        mItemCrearUsuario.setText("Crear Usuario");
+        mItemCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mItemCrearUsuarioActionPerformed(evt);
+            }
+        });
+        menuOpcionesUsuario.add(mItemCrearUsuario);
+
+        mItemEditarUsuario.setText("Editar Usuario");
+        menuOpcionesUsuario.add(mItemEditarUsuario);
+
+        mItemEliminarUsuario.setText("Eliminar Usuario");
+        menuOpcionesUsuario.add(mItemEliminarUsuario);
+
+        mBarPrincipal.add(menuOpcionesUsuario);
+
+        menuPersonalizar.setText("Personalizar");
+        mBarPrincipal.add(menuPersonalizar);
+
+        menuLogout.setText("Logout");
+        menuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuLogoutMouseClicked(evt);
+            }
+        });
+        mBarPrincipal.add(menuLogout);
+
+        menuApagar.setText("Apagar");
+        menuApagar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuApagarMouseClicked(evt);
+            }
+        });
+        mBarPrincipal.add(menuApagar);
+
+        frameSistemaOperativo.setJMenuBar(mBarPrincipal);
+
+        javax.swing.GroupLayout frameSistemaOperativoLayout = new javax.swing.GroupLayout(frameSistemaOperativo.getContentPane());
+        frameSistemaOperativo.getContentPane().setLayout(frameSistemaOperativoLayout);
+        frameSistemaOperativoLayout.setHorizontalGroup(
+            frameSistemaOperativoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 960, Short.MAX_VALUE)
+            .addGroup(frameSistemaOperativoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameSistemaOperativoLayout.createSequentialGroup()
+                    .addComponent(panelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        frameSistemaOperativoLayout.setVerticalGroup(
+            frameSistemaOperativoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 540, Short.MAX_VALUE)
+            .addGroup(frameSistemaOperativoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(frameSistemaOperativoLayout.createSequentialGroup()
+                    .addComponent(panelInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+
+        dialCrearUsuario.setBackground(new java.awt.Color(102, 102, 102));
+        dialCrearUsuario.setModal(true);
+        dialCrearUsuario.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblCrearUsuario.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblCrearUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        lblCrearUsuario.setText("Crear Usuario");
+        dialCrearUsuario.getContentPane().add(lblCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 163, 50));
+
+        lblContrasenaCU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblContrasenaCU.setForeground(new java.awt.Color(255, 255, 255));
+        lblContrasenaCU.setText("Contraseña:");
+        dialCrearUsuario.getContentPane().add(lblContrasenaCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 90, 25));
+
+        lblNombreCU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblNombreCU.setForeground(new java.awt.Color(255, 255, 255));
+        lblNombreCU.setText("Nombre:");
+        dialCrearUsuario.getContentPane().add(lblNombreCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 80, 25));
+
+        txtContrasenaCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtContrasenaCU.setForeground(new java.awt.Color(0, 0, 0));
+        dialCrearUsuario.getContentPane().add(txtContrasenaCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 250, 30));
+
+        txtNombreCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtNombreCU.setForeground(new java.awt.Color(0, 0, 0));
+        dialCrearUsuario.getContentPane().add(txtNombreCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 250, 30));
+
+        lblTipoCU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblTipoCU.setForeground(new java.awt.Color(255, 255, 255));
+        lblTipoCU.setText("Tipo:");
+        dialCrearUsuario.getContentPane().add(lblTipoCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 50, 25));
+
+        comboTipoCU.setBackground(new java.awt.Color(102, 102, 102));
+        comboTipoCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        comboTipoCU.setForeground(new java.awt.Color(255, 255, 255));
+        comboTipoCU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Invitado" }));
+        comboTipoCU.setSelectedIndex(-1);
+        comboTipoCU.setOpaque(true);
+        dialCrearUsuario.getContentPane().add(comboTipoCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 160, 30));
+
+        btnCancelarCU.setBackground(new java.awt.Color(102, 0, 0));
+        btnCancelarCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnCancelarCU.setForeground(new java.awt.Color(255, 255, 255));
+        btnCancelarCU.setText("Cancelar");
+        btnCancelarCU.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarCUActionPerformed(evt);
+            }
+        });
+        dialCrearUsuario.getContentPane().add(btnCancelarCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 430, -1, -1));
+
+        btnCrearUsuario.setBackground(new java.awt.Color(51, 51, 51));
+        btnCrearUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCrearUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        btnCrearUsuario.setText("Crear Usuario");
+        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCrearUsuarioActionPerformed(evt);
+            }
+        });
+        dialCrearUsuario.getContentPane().add(btnCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 140, 40));
+
+        lblIconoCrearUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo login.jpg"))); // NOI18N
+        dialCrearUsuario.getContentPane().add(lblIconoCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 470));
 
         txtAreaEditorTexto.setColumns(20);
         txtAreaEditorTexto.setRows(5);
@@ -225,109 +349,26 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("tab2", panelEditorTexto);
-
-        frameSistemaOperativo.getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -20, 1000, 590));
-
-        mBarPrincipal.setBackground(new java.awt.Color(255, 255, 255));
-        mBarPrincipal.setForeground(new java.awt.Color(0, 0, 0));
-        mBarPrincipal.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-
-        menuOpcionesUsuario.setText("Opciones de Usuario");
-
-        mItemCrearUsuario.setText("Crear Usuario");
-        mItemCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mItemCrearUsuarioActionPerformed(evt);
-            }
-        });
-        menuOpcionesUsuario.add(mItemCrearUsuario);
-
-        mItemEditarUsuario.setText("Editar Usuario");
-        menuOpcionesUsuario.add(mItemEditarUsuario);
-
-        mItemEliminarUsuario.setText("Eliminar Usuario");
-        menuOpcionesUsuario.add(mItemEliminarUsuario);
-
-        mBarPrincipal.add(menuOpcionesUsuario);
-
-        menuPersonalizar.setText("Personalizar");
-        mBarPrincipal.add(menuPersonalizar);
-
-        menuLogout.setText("Logout");
-        menuLogout.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                menuLogoutMouseClicked(evt);
-            }
-        });
-        mBarPrincipal.add(menuLogout);
-
-        frameSistemaOperativo.setJMenuBar(mBarPrincipal);
-
-        dialCrearUsuario.setBackground(new java.awt.Color(102, 102, 102));
-        dialCrearUsuario.setModal(true);
-        dialCrearUsuario.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblCrearUsuario.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lblCrearUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        lblCrearUsuario.setText("Crear Usuario");
-        dialCrearUsuario.getContentPane().add(lblCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 60, 163, 50));
-
-        lblContrasenaCU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblContrasenaCU.setForeground(new java.awt.Color(255, 255, 255));
-        lblContrasenaCU.setText("Contraseña:");
-        dialCrearUsuario.getContentPane().add(lblContrasenaCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 90, 25));
-
-        lblNombreCU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblNombreCU.setForeground(new java.awt.Color(255, 255, 255));
-        lblNombreCU.setText("Nombre:");
-        dialCrearUsuario.getContentPane().add(lblNombreCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 80, 25));
-
-        txtContrasenaCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txtContrasenaCU.setForeground(new java.awt.Color(0, 0, 0));
-        dialCrearUsuario.getContentPane().add(txtContrasenaCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 200, 250, 30));
-
-        txtNombreCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txtNombreCU.setForeground(new java.awt.Color(0, 0, 0));
-        dialCrearUsuario.getContentPane().add(txtNombreCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 250, 30));
-
-        lblTipoCU.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        lblTipoCU.setForeground(new java.awt.Color(255, 255, 255));
-        lblTipoCU.setText("Tipo:");
-        dialCrearUsuario.getContentPane().add(lblTipoCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 50, 25));
-
-        comboTipoCU.setBackground(new java.awt.Color(102, 102, 102));
-        comboTipoCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        comboTipoCU.setForeground(new java.awt.Color(255, 255, 255));
-        comboTipoCU.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Invitado" }));
-        comboTipoCU.setSelectedIndex(-1);
-        comboTipoCU.setOpaque(true);
-        dialCrearUsuario.getContentPane().add(comboTipoCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 160, 30));
-
-        btnCancelarCU.setBackground(new java.awt.Color(102, 0, 0));
-        btnCancelarCU.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        btnCancelarCU.setForeground(new java.awt.Color(255, 255, 255));
-        btnCancelarCU.setText("Cancelar");
-        btnCancelarCU.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarCUActionPerformed(evt);
-            }
-        });
-        dialCrearUsuario.getContentPane().add(btnCancelarCU, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 430, -1, -1));
-
-        btnCrearUsuario.setBackground(new java.awt.Color(51, 51, 51));
-        btnCrearUsuario.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCrearUsuario.setForeground(new java.awt.Color(255, 255, 255));
-        btnCrearUsuario.setText("Crear Usuario");
-        btnCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCrearUsuarioActionPerformed(evt);
-            }
-        });
-        dialCrearUsuario.getContentPane().add(btnCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 340, 140, 40));
-
-        lblIconoCrearUsuario.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo login.jpg"))); // NOI18N
-        dialCrearUsuario.getContentPane().add(lblIconoCrearUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 440, 470));
+        javax.swing.GroupLayout dialEditorTextoLayout = new javax.swing.GroupLayout(dialEditorTexto.getContentPane());
+        dialEditorTexto.getContentPane().setLayout(dialEditorTextoLayout);
+        dialEditorTextoLayout.setHorizontalGroup(
+            dialEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1000, Short.MAX_VALUE)
+            .addGroup(dialEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(dialEditorTextoLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(panelEditorTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
+        dialEditorTextoLayout.setVerticalGroup(
+            dialEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 555, Short.MAX_VALUE)
+            .addGroup(dialEditorTextoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(dialEditorTextoLayout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(panelEditorTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -419,12 +460,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         setVisible(true);
     }//GEN-LAST:event_menuLogoutMouseClicked
 
-    private void lblIconoEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoMouseClicked
-        jTabbedPane1.setSelectedIndex(1);
-    }//GEN-LAST:event_lblIconoEditorTextoMouseClicked
-
     private void btnAtrasEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasEditorTextoMouseClicked
-        jTabbedPane1.setSelectedIndex(0);
+        dialEditorTexto.dispose();
+        frameSistemaOperativo.setVisible(true);
     }//GEN-LAST:event_btnAtrasEditorTextoMouseClicked
 
     private void comboTamanoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboTamanoItemStateChanged
@@ -481,6 +519,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             dialCrearUsuario.dispose();
         }
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
+
+    private void lblIconoEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoMouseClicked
+        frameSistemaOperativo.dispose();
+        dialEditorTexto.pack();
+        dialEditorTexto.setLocationRelativeTo(this);
+        dialEditorTexto.setVisible(true);
+    }//GEN-LAST:event_lblIconoEditorTextoMouseClicked
+
+    private void menuApagarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_menuApagarMouseClicked
 
     /**
      * @param args the command line arguments
@@ -587,11 +636,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboTamano;
     private javax.swing.JComboBox<String> comboTipoCU;
     private javax.swing.JDialog dialCrearUsuario;
+    private javax.swing.JDialog dialEditorTexto;
     private javax.swing.JFrame frameSistemaOperativo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblContrasenaCU;
     private javax.swing.JLabel lblCrearUsuario;
@@ -614,6 +663,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mItemCrearUsuario;
     private javax.swing.JMenuItem mItemEditarUsuario;
     private javax.swing.JMenuItem mItemEliminarUsuario;
+    private javax.swing.JMenu menuApagar;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JMenu menuOpcionesUsuario;
     private javax.swing.JMenu menuPersonalizar;
