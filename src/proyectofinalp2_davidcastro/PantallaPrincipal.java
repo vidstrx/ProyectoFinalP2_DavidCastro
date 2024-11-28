@@ -4,11 +4,15 @@ package proyectofinalp2_davidcastro;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JColorChooser;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class PantallaPrincipal extends javax.swing.JFrame {
 
@@ -16,9 +20,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
      * Creates new form PantallaPrincipal
      */
     
+    // Mis Atributos
     private String [] fuentes;
     private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     private DefaultListModel modeloLista = new DefaultListModel();
+    private DefaultTableModel modeloTabla = new DefaultTableModel();
+    private DateTimeFormatter formato = DateTimeFormatter.ofPattern("hh:mm a");
     
     public PantallaPrincipal() {
         
@@ -26,6 +33,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         
         initComponents();
+        
+        tablaUsuarioInfoSistema.setModel(modeloTabla);
+        modeloTabla.addColumn("Usuario Actual");
+        modeloTabla.addColumn("Hora");
+        modeloTabla.addColumn("Fecha");
+        modeloTabla.setRowCount(1);
         
         listFuente.setModel(modeloLista);
         agregarElementos();
@@ -49,6 +62,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblIconoExploradorArchivosOS = new javax.swing.JLabel();
         lblExploradorArchivoOS = new javax.swing.JLabel();
         lblTituloOS = new javax.swing.JLabel();
+        lblIconoInfoSistemaOS = new javax.swing.JLabel();
+        lblInfoSistemaOS = new javax.swing.JLabel();
         mBarPrincipal = new javax.swing.JMenuBar();
         menuOpcionesUsuario = new javax.swing.JMenu();
         mItemCrearUsuario = new javax.swing.JMenuItem();
@@ -98,6 +113,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         tgBtnTitulo = new javax.swing.JToggleButton();
         lblOnOff = new javax.swing.JLabel();
         lblFondoFuente = new javax.swing.JLabel();
+        dialInfoSistema = new javax.swing.JDialog();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tablaUsuarioInfoSistema = new javax.swing.JTable();
+        lblFondoInfoSistema = new javax.swing.JLabel();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -114,12 +133,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 framePantallaInicioOSWindowClosed(evt);
             }
         });
+        framePantallaInicioOS.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelInicioOS.setBackground(new java.awt.Color(153, 153, 153));
         panelInicioOS.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblIconoEditorTextoOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/editor de texto.png"))); // NOI18N
         lblIconoEditorTextoOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblIconoEditorTextoOS.setOpaque(true);
         lblIconoEditorTextoOS.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblIconoEditorTextoOSMouseClicked(evt);
@@ -135,19 +156,36 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         lblIconoExploradorArchivosOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/explorador archivos.png"))); // NOI18N
         lblIconoExploradorArchivosOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        panelInicioOS.add(lblIconoExploradorArchivosOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 140, 140));
+        panelInicioOS.add(lblIconoExploradorArchivosOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 150, 140, 140));
 
         lblExploradorArchivoOS.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         lblExploradorArchivoOS.setForeground(new java.awt.Color(0, 0, 0));
         lblExploradorArchivoOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblExploradorArchivoOS.setText("Explorador de Archivos");
-        panelInicioOS.add(lblExploradorArchivoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 280, 300, 70));
+        panelInicioOS.add(lblExploradorArchivoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 300, 70));
 
         lblTituloOS.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         lblTituloOS.setForeground(new java.awt.Color(0, 0, 0));
         lblTituloOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloOS.setText("Pantalla de Inicio");
         panelInicioOS.add(lblTituloOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 790, 100));
+
+        lblIconoInfoSistemaOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono info de sistema.png"))); // NOI18N
+        lblIconoInfoSistemaOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblIconoInfoSistemaOS.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblIconoInfoSistemaOSMouseClicked(evt);
+            }
+        });
+        panelInicioOS.add(lblIconoInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, 140, 140));
+
+        lblInfoSistemaOS.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        lblInfoSistemaOS.setForeground(new java.awt.Color(0, 0, 0));
+        lblInfoSistemaOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblInfoSistemaOS.setText("Informacion del sistema");
+        panelInicioOS.add(lblInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 280, 300, 70));
+
+        framePantallaInicioOS.getContentPane().add(panelInicioOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 540));
 
         mBarPrincipal.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(241, 241, 241), 1, true));
         mBarPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -302,21 +340,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         mBarPrincipal.add(menuApagar);
 
         framePantallaInicioOS.setJMenuBar(mBarPrincipal);
-
-        javax.swing.GroupLayout framePantallaInicioOSLayout = new javax.swing.GroupLayout(framePantallaInicioOS.getContentPane());
-        framePantallaInicioOS.getContentPane().setLayout(framePantallaInicioOSLayout);
-        framePantallaInicioOSLayout.setHorizontalGroup(
-            framePantallaInicioOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 960, Short.MAX_VALUE)
-            .addGroup(framePantallaInicioOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelInicioOS, javax.swing.GroupLayout.DEFAULT_SIZE, 960, Short.MAX_VALUE))
-        );
-        framePantallaInicioOSLayout.setVerticalGroup(
-            framePantallaInicioOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 540, Short.MAX_VALUE)
-            .addGroup(framePantallaInicioOSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(panelInicioOS, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE))
-        );
 
         dialCrearUsuario.setBackground(new java.awt.Color(102, 102, 102));
         dialCrearUsuario.setModal(true);
@@ -639,6 +662,30 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblFondoFuente.setOpaque(true);
         dialPersonalizarFuente.getContentPane().add(lblFondoFuente, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 460, 270));
 
+        dialInfoSistema.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jScrollPane3.setColumnHeader(null);
+
+        tablaUsuarioInfoSistema.setBackground(new java.awt.Color(204, 204, 204));
+        tablaUsuarioInfoSistema.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        tablaUsuarioInfoSistema.setForeground(new java.awt.Color(0, 0, 0));
+        tablaUsuarioInfoSistema.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3"
+            }
+        ));
+        jScrollPane3.setViewportView(tablaUsuarioInfoSistema);
+
+        dialInfoSistema.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 310, 40));
+
+        lblFondoInfoSistema.setBackground(new java.awt.Color(75, 75, 75));
+        lblFondoInfoSistema.setOpaque(true);
+        dialInfoSistema.getContentPane().add(lblFondoInfoSistema, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 420));
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelInicioSesion.setPreferredSize(new java.awt.Dimension(507, 600));
@@ -716,9 +763,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    
+    String nombre = "", contrasena = "";
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
-        if (verificarUsuario(txtNombre.getText(), txtContrasena.getText())){
+        nombre = txtNombre.getText();
+        contrasena = txtContrasena.getText();
+        if (verificarUsuario(nombre, contrasena)){
             txtNombre.setText("");
             txtContrasena.setText("");
             
@@ -742,7 +793,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnAtrasEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasEditorTextoMouseClicked
         dialEditorTexto.dispose();
-        framePantallaInicioOS.setVisible(true);
+        //framePantallaInicioOS.setVisible(true);
     }//GEN-LAST:event_btnAtrasEditorTextoMouseClicked
 
     private void comboTamanoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboTamanoItemStateChanged
@@ -803,7 +854,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
     private void lblIconoEditorTextoOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoOSMouseClicked
-        framePantallaInicioOS.dispose();
+        //framePantallaInicioOS.dispose();
         dialEditorTexto.pack();
         dialEditorTexto.setLocationRelativeTo(this);
         dialEditorTexto.setVisible(true);
@@ -1032,6 +1083,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         //-----------------------------------------------------------------------------------\\
     }//GEN-LAST:event_mItemFondoImagenActionPerformed
 
+    private void lblIconoInfoSistemaOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoInfoSistemaOSMouseClicked
+        modeloTabla.setValueAt(usuarioActual(nombre, contrasena).getNombre(), 0, 0);
+        modeloTabla.setValueAt(LocalTime.now().format(formato), 0, 1);
+        modeloTabla.setValueAt(LocalDate.now(), 0, 2);
+        dialInfoSistema.pack();
+        dialInfoSistema.setLocationRelativeTo(this);
+        dialInfoSistema.setVisible(true);
+        
+    }//GEN-LAST:event_lblIconoInfoSistemaOSMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1144,11 +1205,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboTipoCU;
     private javax.swing.JDialog dialCrearUsuario;
     private javax.swing.JDialog dialEditorTexto;
+    private javax.swing.JDialog dialInfoSistema;
     private javax.swing.JDialog dialPersonalizarFuente;
     private javax.swing.JFrame framePantallaInicioOS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblContrasenaCU;
     private javax.swing.JLabel lblCrearUsuario;
@@ -1158,12 +1221,15 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lblExploradorArchivoOS;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblFondoFuente;
+    private javax.swing.JLabel lblFondoInfoSistema;
     private javax.swing.JLabel lblFuente;
     private javax.swing.JLabel lblFuenteFuente;
     private javax.swing.JLabel lblIcono;
     private javax.swing.JLabel lblIconoCrearUsuario;
     private javax.swing.JLabel lblIconoEditorTextoOS;
     private javax.swing.JLabel lblIconoExploradorArchivosOS;
+    private javax.swing.JLabel lblIconoInfoSistemaOS;
+    private javax.swing.JLabel lblInfoSistemaOS;
     private javax.swing.JLabel lblInicioSesion;
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblNombreCU;
@@ -1190,6 +1256,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelEditorTexto;
     private javax.swing.JPanel panelInicioOS;
     private javax.swing.JPanel panelInicioSesion;
+    private javax.swing.JTable tablaUsuarioInfoSistema;
     private javax.swing.JToggleButton tgBtnTitulo;
     private javax.swing.JTextArea txtAreaEditorTexto;
     private javax.swing.JTextField txtContrasena;
