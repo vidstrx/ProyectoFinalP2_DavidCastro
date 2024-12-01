@@ -7,7 +7,6 @@ import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,8 +14,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JColorChooser;
@@ -33,7 +30,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     // Mis Atributos
     private String [] fuentes;
     private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
-    private DefaultListModel modeloLista = new DefaultListModel();
+    private DefaultListModel modeloListaFuentes = new DefaultListModel();
+    private DefaultListModel modeloListaUsuarios = new DefaultListModel();
     private DefaultTableModel modeloTabla = new DefaultTableModel();
     private DateTimeFormatter formato = DateTimeFormatter.ofPattern("hh:mm a");
     
@@ -50,7 +48,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         modeloTabla.addColumn("Fecha");
         modeloTabla.setRowCount(1);
         
-        listFuente.setModel(modeloLista);
+        modeloListaUsuarios.addElement(usuarios.get(0));
+        listFuente.setModel(modeloListaFuentes);
+        listUsuariosRegistrados.setModel(modeloListaUsuarios);
         agregarElementos();
         setLocationRelativeTo(null);
         //System.out.println(usuarios);
@@ -135,6 +135,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaUsuarioInfoSistema = new javax.swing.JTable();
         lblTituloInfoSistema = new javax.swing.JLabel();
+        btnEliminarUsuario = new javax.swing.JButton();
+        btnEditarUsuario = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        listUsuariosRegistrados = new javax.swing.JList<>();
         lblFondoInfoSistema = new javax.swing.JLabel();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
@@ -728,7 +733,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         dialInfoSistema.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         tablaUsuarioInfoSistema.setBackground(new java.awt.Color(204, 204, 204));
-        tablaUsuarioInfoSistema.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        tablaUsuarioInfoSistema.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         tablaUsuarioInfoSistema.setForeground(new java.awt.Color(0, 0, 0));
         tablaUsuarioInfoSistema.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -741,14 +746,65 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tablaUsuarioInfoSistema);
 
-        dialInfoSistema.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 310, 40));
+        dialInfoSistema.getContentPane().add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, 310, 40));
 
+        lblTituloInfoSistema.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblTituloInfoSistema.setForeground(new java.awt.Color(255, 255, 255));
+        lblTituloInfoSistema.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloInfoSistema.setText("Informacion del Sistema");
-        dialInfoSistema.getContentPane().add(lblTituloInfoSistema, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 20, -1, -1));
+        dialInfoSistema.getContentPane().add(lblTituloInfoSistema, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 30, 320, 40));
 
-        lblFondoInfoSistema.setBackground(new java.awt.Color(75, 75, 75));
+        btnEliminarUsuario.setBackground(new java.awt.Color(75, 75, 75));
+        btnEliminarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEliminarUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarUsuario.setText("Eliminar Usuario");
+        btnEliminarUsuario.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEliminarUsuario.setPreferredSize(new java.awt.Dimension(122, 26));
+        btnEliminarUsuario.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEliminarUsuarioMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnEliminarUsuarioMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnEliminarUsuarioMouseExited(evt);
+            }
+        });
+        btnEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarUsuarioActionPerformed(evt);
+            }
+        });
+        dialInfoSistema.getContentPane().add(btnEliminarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 330, -1, -1));
+
+        btnEditarUsuario.setBackground(new java.awt.Color(75, 75, 75));
+        btnEditarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnEditarUsuario.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarUsuario.setText("Editar Usuario");
+        btnEditarUsuario.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnEditarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnEditarUsuario.setPreferredSize(new java.awt.Dimension(109, 26));
+        dialInfoSistema.getContentPane().add(btnEditarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Lista de Usuarios registrados en el sistema");
+        dialInfoSistema.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 150, -1, -1));
+
+        listUsuariosRegistrados.setBackground(new java.awt.Color(204, 204, 204));
+        listUsuariosRegistrados.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        listUsuariosRegistrados.setForeground(new java.awt.Color(0, 0, 0));
+        listUsuariosRegistrados.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jScrollPane4.setViewportView(listUsuariosRegistrados);
+
+        dialInfoSistema.getContentPane().add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 180, 250, 130));
+
+        lblFondoInfoSistema.setBackground(new java.awt.Color(51, 51, 51));
+        lblFondoInfoSistema.setForeground(new java.awt.Color(246, 245, 245));
         lblFondoInfoSistema.setOpaque(true);
-        dialInfoSistema.getContentPane().add(lblFondoInfoSistema, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 610, 420));
+        dialInfoSistema.getContentPane().add(lblFondoInfoSistema, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 390));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -913,8 +969,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         } else {
             if (comboTipoCU.getSelectedIndex() == 0) {
                 usuarios.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                modeloListaUsuarios.addElement(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
             } else {
                 usuarios.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                modeloListaUsuarios.addElement(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
             }
             JOptionPane.showMessageDialog(rootPane, "Usuario creado exitosamente");
             dialCrearUsuario.dispose();
@@ -1223,6 +1281,34 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void btnColorEditorTextoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnColorEditorTextoMouseExited
         btnColorEditorTexto.setBackground(Color.decode("#4B4B4B"));
     }//GEN-LAST:event_btnColorEditorTextoMouseExited
+    
+    //int contadorAdmins =
+    private void btnEliminarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioMouseClicked
+        int seleccionado = listUsuariosRegistrados.getSelectedIndex();
+        if (seleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (usuarios.get(seleccionado).equals(usuarioActual(nombre, contrasena))) {
+            JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                modeloListaUsuarios.removeElementAt(seleccionado);
+                usuarios.remove(seleccionado);
+            }
+        }
+    }//GEN-LAST:event_btnEliminarUsuarioMouseClicked
+
+    private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
+
+    }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
+
+    private void btnEliminarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioMouseEntered
+        btnEliminarUsuario.setBackground(Color.BLACK);
+    }//GEN-LAST:event_btnEliminarUsuarioMouseEntered
+
+    private void btnEliminarUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioMouseExited
+        btnEliminarUsuario.setBackground(Color.decode("#4B4B4B"));
+    }//GEN-LAST:event_btnEliminarUsuarioMouseExited
 
     /**
      * @param args the command line arguments
@@ -1279,7 +1365,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         }
         for (int i = 0; i < fuentes.length; i++) {
             comboFuentes.addItem(fuentes[i]);
-            modeloLista.addElement(fuentes[i]);
+            modeloListaFuentes.addElement(fuentes[i]);
         }
     }
     
@@ -1327,6 +1413,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnColorEditorTexto;
     private javax.swing.JButton btnColorFuente;
     private javax.swing.JButton btnCrearUsuario;
+    private javax.swing.JButton btnEditarUsuario;
+    private javax.swing.JButton btnEliminarUsuario;
     private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JButton btnVolverFuente;
     private javax.swing.JComboBox<String> comboEstiloFuente;
@@ -1341,9 +1429,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDialog dialPersonalizarFuente;
     private javax.swing.JFrame framePantallaInicioOS;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel lblColorEditorTexto;
     private javax.swing.JLabel lblColorFuente;
     private javax.swing.JLabel lblContrasena;
@@ -1376,6 +1466,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lblTituloOS;
     private javax.swing.JLabel lblTituloPersonalizacionFuente;
     private javax.swing.JList<String> listFuente;
+    private javax.swing.JList<String> listUsuariosRegistrados;
     private javax.swing.JMenuBar mBarEditorTexto;
     private javax.swing.JMenuBar mBarPrincipal;
     private javax.swing.JMenuItem mItemAbrirEditorTexto;
