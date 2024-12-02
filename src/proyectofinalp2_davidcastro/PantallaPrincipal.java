@@ -156,9 +156,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblContrasena = new javax.swing.JLabel();
         lblNombre = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
-        txtContrasena = new javax.swing.JTextField();
         btnIniciarSesion = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        txtPassContrasena = new javax.swing.JPasswordField();
         lblFondo = new javax.swing.JLabel();
 
         framePantallaInicioOS.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -255,6 +255,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         mItemEditarUsuario.setText("Editar Usuario");
         mItemEditarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mItemEditarUsuario.setOpaque(true);
+        mItemEditarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mItemEditarUsuarioActionPerformed(evt);
+            }
+        });
         menuOpcionesUsuario.add(mItemEditarUsuario);
 
         mItemEliminarUsuario.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -262,6 +267,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         mItemEliminarUsuario.setText("Eliminar Usuario");
         mItemEliminarUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mItemEliminarUsuario.setOpaque(true);
+        mItemEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mItemEliminarUsuarioActionPerformed(evt);
+            }
+        });
         menuOpcionesUsuario.add(mItemEliminarUsuario);
 
         mBarPrincipal.add(menuOpcionesUsuario);
@@ -825,6 +835,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblFondoInfoSistema.setOpaque(true);
         dialInfoSistema.getContentPane().add(lblFondoInfoSistema, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 390));
 
+        dialEditarUsuario.setModal(true);
         dialEditarUsuario.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 dialEditarUsuarioWindowClosed(evt);
@@ -927,11 +938,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         txtNombre.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelInicioSesion.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 250, 30));
 
-        txtContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        txtContrasena.setForeground(new java.awt.Color(0, 0, 0));
-        txtContrasena.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelInicioSesion.add(txtContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 390, 250, 30));
-
         btnIniciarSesion.setBackground(new java.awt.Color(0, 0, 0));
         btnIniciarSesion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
@@ -956,6 +962,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1.setText("Si es primera vez, utiliza (Nombre = admin / Contraseña = 1234) para poder entrar.");
         panelInicioSesion.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 470, -1));
 
+        txtPassContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtPassContrasena.setForeground(new java.awt.Color(0, 0, 0));
+        txtPassContrasena.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelInicioSesion.add(txtPassContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 392, 250, 30));
+
         lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo login.jpg"))); // NOI18N
         panelInicioSesion.add(lblFondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
@@ -978,13 +989,15 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     
-    String nombre = "", contrasena = "";
+    String nombre = "", contrasena = ""; 
+    Usuario usuarioAct = new Usuario();
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
         nombre = txtNombre.getText();
-        contrasena = txtContrasena.getText();
+        contrasena = new String(txtPassContrasena.getPassword());
         if (verificarUsuario(nombre, contrasena)){
+            usuarioAct = usuarioActual(nombre, contrasena);
             txtNombre.setText("");
-            txtContrasena.setText("");
+            txtPassContrasena.setText("");
             
             framePantallaInicioOS.pack();
             framePantallaInicioOS.setVisible(true);
@@ -993,6 +1006,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             //JOptionPane.showMessageDialog(this, "Sesion iniciada");
         } else {
             JOptionPane.showMessageDialog(this, "No existe ese usuario","Error",JOptionPane.ERROR_MESSAGE);
+        }
+        
+        if (usuarioActual(nombre, contrasena) instanceof Invitado) {
+            menuOpcionesUsuario.setVisible(false);
+            btnEliminarUsuario.setVisible(false);
+            btnEditarUsuario.setVisible(false);
+        } else {
+            menuOpcionesUsuario.setVisible(true);
+            btnEliminarUsuario.setVisible(true);
+            btnEditarUsuario.setVisible(true);
         }
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
 
@@ -1375,12 +1398,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnColorEditorTexto.setBackground(Color.decode("#4B4B4B"));
     }//GEN-LAST:event_btnColorEditorTextoMouseExited
     
-    int seleccionado = 0;
+    int seleccionado = 0; 
     private void btnEliminarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioMouseClicked
         seleccionado = listUsuariosRegistrados.getSelectedIndex();
         if (seleccionado == -1) {
             JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (usuarios.get(seleccionado).equals(usuarioActual(nombre, contrasena))) {
+        } else if (usuarios.get(seleccionado).equals(usuarioAct)) {
             JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -1405,14 +1428,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnEditarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarUsuarioMouseClicked
         seleccionado = listUsuariosRegistrados.getSelectedIndex();
+        dialEditarUsuario.pack();
+        dialEditarUsuario.setLocationRelativeTo(this);
         if (seleccionado == -1) {
             JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            dialEditarUsuario.pack();
-            dialEditarUsuario.setLocationRelativeTo(this);
             dialEditarUsuario.setVisible(true);
-            txtNombreEU.setText(usuarios.get(seleccionado).getNombre());
-            txtContrasenaEU.setText(usuarios.get(seleccionado).getContrasena());
         } 
     }//GEN-LAST:event_btnEditarUsuarioMouseClicked
 
@@ -1454,6 +1475,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void btnAtrasEUMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasEUMouseExited
         btnAtrasEU.setBackground(Color.decode("#990000"));
     }//GEN-LAST:event_btnAtrasEUMouseExited
+
+    private void mItemEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemEditarUsuarioActionPerformed
+        dialInfoSistema.pack();
+        dialInfoSistema.setLocationRelativeTo(this);
+        dialInfoSistema.setVisible(true);
+    }//GEN-LAST:event_mItemEditarUsuarioActionPerformed
+
+    private void mItemEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemEliminarUsuarioActionPerformed
+        dialInfoSistema.pack();
+        dialInfoSistema.setLocationRelativeTo(this);
+        dialInfoSistema.setVisible(true);
+    }//GEN-LAST:event_mItemEliminarUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1642,11 +1675,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable tablaUsuarioInfoSistema;
     private javax.swing.JToggleButton tgBtnTitulo;
     private javax.swing.JTextArea txtAreaEditorTexto;
-    private javax.swing.JTextField txtContrasena;
     private javax.swing.JTextField txtContrasenaCU;
     private javax.swing.JTextField txtContrasenaEU;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNombreCU;
     private javax.swing.JTextField txtNombreEU;
+    private javax.swing.JPasswordField txtPassContrasena;
     // End of variables declaration//GEN-END:variables
 }
