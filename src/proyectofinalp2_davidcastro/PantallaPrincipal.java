@@ -14,10 +14,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JColorChooser;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -150,6 +151,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnAceptarEU = new javax.swing.JButton();
         btnAtrasEU = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        dialProgressBar = new javax.swing.JDialog();
+        pBarCarga = new javax.swing.JProgressBar();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -814,6 +817,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnEditarUsuarioMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnEditarUsuarioMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnEditarUsuarioMouseExited(evt);
+            }
         });
         dialInfoSistema.getContentPane().add(btnEditarUsuario, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, -1, -1));
 
@@ -910,6 +919,29 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo login.jpg"))); // NOI18N
         dialEditarUsuario.getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 392, 286));
 
+        pBarCarga.setBackground(new java.awt.Color(75, 75, 75));
+        pBarCarga.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        pBarCarga.setForeground(new java.awt.Color(0, 0, 102));
+        pBarCarga.setOpaque(true);
+        pBarCarga.setStringPainted(true);
+
+        javax.swing.GroupLayout dialProgressBarLayout = new javax.swing.GroupLayout(dialProgressBar.getContentPane());
+        dialProgressBar.getContentPane().setLayout(dialProgressBarLayout);
+        dialProgressBarLayout.setHorizontalGroup(
+            dialProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dialProgressBarLayout.createSequentialGroup()
+                .addContainerGap(49, Short.MAX_VALUE)
+                .addComponent(pBarCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(46, 46, 46))
+        );
+        dialProgressBarLayout.setVerticalGroup(
+            dialProgressBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(dialProgressBarLayout.createSequentialGroup()
+                .addGap(42, 42, 42)
+                .addComponent(pBarCarga, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(52, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelInicioSesion.setPreferredSize(new java.awt.Dimension(507, 600));
@@ -999,9 +1031,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             txtNombre.setText("");
             txtPassContrasena.setText("");
             
-            framePantallaInicioOS.pack();
-            framePantallaInicioOS.setVisible(true);
-            framePantallaInicioOS.setLocationRelativeTo(this);
+            barraDeProgreso(framePantallaInicioOS);
             dispose();
             //JOptionPane.showMessageDialog(this, "Sesion iniciada");
         } else {
@@ -1023,7 +1053,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         int opcion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que quieres cerrar sesion?", "Advertencia", JOptionPane.YES_NO_CANCEL_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
             framePantallaInicioOS.dispose();
-            setVisible(true);
+            barraDeProgreso(this);
         }
     }//GEN-LAST:event_menuLogoutMouseClicked
 
@@ -1074,9 +1104,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtrasCUActionPerformed
 
     private void mItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemCrearUsuarioActionPerformed
-        dialCrearUsuario.pack();
-        dialCrearUsuario.setLocationRelativeTo(this);
-        dialCrearUsuario.setVisible(true);
+        barraDeProgreso(dialCrearUsuario);
     }//GEN-LAST:event_mItemCrearUsuarioActionPerformed
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
@@ -1097,9 +1125,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void lblIconoEditorTextoOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoOSMouseClicked
         //framePantallaInicioOS.dispose();
-        dialEditorTexto.pack();
-        dialEditorTexto.setLocationRelativeTo(this);
-        dialEditorTexto.setVisible(true);
+        barraDeProgreso(dialEditorTexto);
     }//GEN-LAST:event_lblIconoEditorTextoOSMouseClicked
 
     private void menuApagarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseClicked
@@ -1241,7 +1267,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnColorFuenteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnColorFuenteMouseClicked
         Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la pantalla de inicio", Color.BLACK);
-        
         if (tgBtnTitulo.isSelected()) {
             lblTituloOS.setForeground(colorSeleccionado);
         } else {
@@ -1338,10 +1363,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         modeloTabla.setValueAt(LocalTime.now().format(formato), 0, 1);
         modeloTabla.setValueAt(LocalDate.now(), 0, 2);
         
-        dialInfoSistema.pack();
-        dialInfoSistema.setLocationRelativeTo(this);
-        dialInfoSistema.setVisible(true);
-        
+        barraDeProgreso(dialInfoSistema);
     }//GEN-LAST:event_lblIconoInfoSistemaOSMouseClicked
 
         JFileChooser buscador = new JFileChooser();
@@ -1428,12 +1450,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnEditarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarUsuarioMouseClicked
         seleccionado = listUsuariosRegistrados.getSelectedIndex();
-        dialEditarUsuario.pack();
-        dialEditarUsuario.setLocationRelativeTo(this);
         if (seleccionado == -1) {
             JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            dialEditarUsuario.setVisible(true);
+            barraDeProgreso(dialEditarUsuario);
         } 
     }//GEN-LAST:event_btnEditarUsuarioMouseClicked
 
@@ -1477,16 +1497,20 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtrasEUMouseExited
 
     private void mItemEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemEditarUsuarioActionPerformed
-        dialInfoSistema.pack();
-        dialInfoSistema.setLocationRelativeTo(this);
-        dialInfoSistema.setVisible(true);
+        barraDeProgreso(dialInfoSistema);
     }//GEN-LAST:event_mItemEditarUsuarioActionPerformed
 
     private void mItemEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemEliminarUsuarioActionPerformed
-        dialInfoSistema.pack();
-        dialInfoSistema.setLocationRelativeTo(this);
-        dialInfoSistema.setVisible(true);
+        barraDeProgreso(dialInfoSistema);
     }//GEN-LAST:event_mItemEliminarUsuarioActionPerformed
+
+    private void btnEditarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarUsuarioMouseEntered
+        btnEditarUsuario.setBackground(Color.BLACK);
+    }//GEN-LAST:event_btnEditarUsuarioMouseEntered
+
+    private void btnEditarUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarUsuarioMouseExited
+        btnEditarUsuario.setBackground(Color.decode("#4B4B4B"));
+    }//GEN-LAST:event_btnEditarUsuarioMouseExited
 
     /**
      * @param args the command line arguments
@@ -1558,12 +1582,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         return usuario;
     }
     
-    /*private void barraDeProgreso() {
-        frameProgressBar.pack();
-        frameProgressBar.setVisible(true); 
-        frameProgressBar.setLocationRelativeTo(this);
-        int contador = 0;
-        System.out.println(frameProgressBar.isVisible());
+    private void barraDeProgreso(JFrame frame) {
+        dialProgressBar.pack();
+        dialProgressBar.setVisible(true); 
+        dialProgressBar.setLocationRelativeTo(this);
         Thread thread = new Thread() {
             public void run() {
                 pBarCarga.setValue(0);
@@ -1575,15 +1597,45 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                         e.printStackTrace();
                     }
                     if (pBarCarga.getValue() == 100){
-                        frameProgressBar.setVisible(false);
-                        frameProgressBar.dispose();
+                        dialProgressBar.setVisible(false);
+                        dialProgressBar.dispose();
                     }
                 }
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
             }
         };
         thread.start();
-        
-    }*/
+    }
+    
+    private void barraDeProgreso(JDialog dial) {
+        dialProgressBar.pack();
+        dialProgressBar.setVisible(true); 
+        dialProgressBar.setLocationRelativeTo(this);
+        Thread thread = new Thread() {
+            public void run() {
+                pBarCarga.setValue(0);
+                while (pBarCarga.getValue() < 100) {
+                    pBarCarga.setValue(pBarCarga.getValue() + 5);
+                    try {
+                        Thread.sleep(50);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (pBarCarga.getValue() == 100){
+                        dialProgressBar.setVisible(false);
+                        dialProgressBar.dispose();
+                    }
+                }
+                dial.pack();
+                dial.setLocationRelativeTo(null);
+                dial.setVisible(true);
+            }
+        };
+        thread.start();
+    }
+    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptarEU;
@@ -1608,6 +1660,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDialog dialEditorTexto;
     private javax.swing.JDialog dialInfoSistema;
     private javax.swing.JDialog dialPersonalizarFuente;
+    private javax.swing.JDialog dialProgressBar;
     private javax.swing.JFrame framePantallaInicioOS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -1669,6 +1722,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuLogout;
     private javax.swing.JMenu menuOpcionesUsuario;
     private javax.swing.JMenu menuPersonalizar;
+    private javax.swing.JProgressBar pBarCarga;
     private javax.swing.JPanel panelEditorTexto;
     private javax.swing.JPanel panelInicioOS;
     private javax.swing.JPanel panelInicioSesion;
