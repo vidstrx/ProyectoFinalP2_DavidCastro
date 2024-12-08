@@ -3,7 +3,9 @@ package proyectofinalp2_davidcastro;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,11 +17,14 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 public class PantallaPrincipal extends javax.swing.JFrame {
@@ -35,6 +40,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private DefaultListModel modeloListaUsuarios = new DefaultListModel();
     private DefaultTableModel modeloTabla = new DefaultTableModel();
     private DateTimeFormatter formato = DateTimeFormatter.ofPattern("hh:mm a");
+    private Image imagen;
     
     public PantallaPrincipal() {
         
@@ -67,7 +73,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         framePantallaInicioOS = new javax.swing.JFrame();
-        panelInicioOS = new javax.swing.JPanel();
+        panelInicioOS = new javax.swing.JPanel(){
+
+            @Override
+            public void paintComponent(Graphics g) {
+                int width = this.getWidth();
+                int height = this.getHeight();
+                if (imagen != null) {
+                    g.drawImage(imagen, 0, 0, width, height, null);
+                }
+                super.paintComponent(g);
+            }
+        };
         lblIconoEditorTextoOS = new javax.swing.JLabel();
         lblEditorTextoOS = new javax.swing.JLabel();
         lblIconoExploradorArchivosOS = new javax.swing.JLabel();
@@ -338,7 +355,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         mItemFondoImagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         mItemFondoImagen.setForeground(new java.awt.Color(0, 0, 0));
-        mItemFondoImagen.setText("Fondo de pantalla");
+        mItemFondoImagen.setText("Imagen del fondo de pantalla");
         mItemFondoImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         mItemFondoImagen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -994,7 +1011,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel1.setText("Si es primera vez, utiliza (Nombre = admin / Contraseña = 1234) para poder entrar.");
         panelInicioSesion.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 290, 470, -1));
 
-        txtPassContrasena.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        txtPassContrasena.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         txtPassContrasena.setForeground(new java.awt.Color(0, 0, 0));
         txtPassContrasena.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelInicioSesion.add(txtPassContrasena, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 392, 250, 30));
@@ -1033,7 +1050,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             
             barraDeProgreso(framePantallaInicioOS);
             dispose();
-            //JOptionPane.showMessageDialog(this, "Sesion iniciada");
         } else {
             JOptionPane.showMessageDialog(this, "No existe ese usuario","Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -1355,7 +1371,20 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_tgBtnTituloItemStateChanged
 
     private void mItemFondoImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemFondoImagenActionPerformed
-        //-----------------------------------------------------------------------------------\\
+        JFileChooser fchooser = new JFileChooser();
+        
+        String userHome = System.getProperty("user.home");
+        File rutaArchivo = new File(userHome,"Pictures");
+        
+        FileNameExtensionFilter tipo = new FileNameExtensionFilter("JPG y PNG", "png","jpg");
+        fchooser.setFileFilter(tipo);
+        fchooser.setCurrentDirectory(rutaArchivo);
+        
+        int opcion = fchooser.showOpenDialog(null);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fchooser.getSelectedFile();
+            setFondoPanel(selectedFile.toString(), panelInicioOS);
+        }
     }//GEN-LAST:event_mItemFondoImagenActionPerformed
 
     private void lblIconoInfoSistemaOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoInfoSistemaOSMouseClicked
@@ -1636,6 +1665,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         thread.start();
     }
     
+    public void setFondoPanel(String ruta, JPanel panel){
+        panel.setOpaque(false);
+        imagen = new ImageIcon(ruta).getImage();
+        panel.repaint();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptarEU;
