@@ -134,6 +134,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         menuArchivoEditorTexto = new javax.swing.JMenu();
         mItemAbrirEditorTexto = new javax.swing.JMenuItem();
         mItemGuardarEditorTexto = new javax.swing.JMenuItem();
+        menuBorrarTexto = new javax.swing.JMenu();
+        menuDeshacer = new javax.swing.JMenu();
         dialPersonalizarFuente = new javax.swing.JDialog();
         jScrollPane2 = new javax.swing.JScrollPane();
         listFuente = new javax.swing.JList<>();
@@ -646,6 +648,28 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         menuArchivoEditorTexto.add(mItemGuardarEditorTexto);
 
         mBarEditorTexto.add(menuArchivoEditorTexto);
+
+        menuBorrarTexto.setForeground(new java.awt.Color(0, 0, 0));
+        menuBorrarTexto.setText("Borrar texto");
+        menuBorrarTexto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuBorrarTexto.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        menuBorrarTexto.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuBorrarTextoMouseClicked(evt);
+            }
+        });
+        mBarEditorTexto.add(menuBorrarTexto);
+
+        menuDeshacer.setForeground(new java.awt.Color(0, 0, 0));
+        menuDeshacer.setText("Deshacer");
+        menuDeshacer.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menuDeshacer.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        menuDeshacer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                menuDeshacerMouseClicked(evt);
+            }
+        });
+        mBarEditorTexto.add(menuDeshacer);
 
         dialEditorTexto.setJMenuBar(mBarEditorTexto);
 
@@ -1541,6 +1565,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         btnEditarUsuario.setBackground(Color.decode("#4B4B4B"));
     }//GEN-LAST:event_btnEditarUsuarioMouseExited
 
+    String textoAnterior = "";
+    private void menuBorrarTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuBorrarTextoMouseClicked
+        textoAnterior = txtAreaEditorTexto.getText();
+        txtAreaEditorTexto.setText("");
+    }//GEN-LAST:event_menuBorrarTextoMouseClicked
+
+    private void menuDeshacerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuDeshacerMouseClicked
+        txtAreaEditorTexto.setText(textoAnterior);
+    }//GEN-LAST:event_menuDeshacerMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -1753,6 +1787,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem mItemNavbarColor;
     private javax.swing.JMenu menuApagar;
     private javax.swing.JMenu menuArchivoEditorTexto;
+    private javax.swing.JMenu menuBorrarTexto;
+    private javax.swing.JMenu menuDeshacer;
     private javax.swing.JMenu menuLogout;
     private javax.swing.JMenu menuOpcionesUsuario;
     private javax.swing.JMenu menuPersonalizar;
