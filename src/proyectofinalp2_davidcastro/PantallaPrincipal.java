@@ -24,6 +24,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
@@ -172,6 +173,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         dialProgressBar = new javax.swing.JDialog();
         pBarCarga = new javax.swing.JProgressBar();
+        ppMenuPantalla = new javax.swing.JPopupMenu();
+        ppmPersonalizar = new javax.swing.JMenu();
+        ppmItemNavbarColor = new javax.swing.JMenuItem();
+        ppmItemColorLetraNavbar = new javax.swing.JMenuItem();
+        ppmItemColorFondo = new javax.swing.JMenuItem();
+        ppmItemFuente = new javax.swing.JMenuItem();
+        ppmItemFondoImagen = new javax.swing.JMenuItem();
+        ppmOpcionesUsuario = new javax.swing.JMenu();
+        ppmItemCrearUsuario = new javax.swing.JMenuItem();
+        ppmItemEditarUsuario = new javax.swing.JMenuItem();
+        ppmItemEliminarUsuario = new javax.swing.JMenuItem();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -183,6 +195,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         txtPassContrasena = new javax.swing.JPasswordField();
         lblFondo = new javax.swing.JLabel();
 
+        framePantallaInicioOS.setResizable(false);
         framePantallaInicioOS.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 framePantallaInicioOSWindowClosed(evt);
@@ -191,6 +204,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         framePantallaInicioOS.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelInicioOS.setBackground(new java.awt.Color(153, 153, 153));
+        panelInicioOS.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                panelInicioOSMouseClicked(evt);
+            }
+        });
         panelInicioOS.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblIconoEditorTextoOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/editor de texto.png"))); // NOI18N
@@ -211,6 +229,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         lblIconoExploradorArchivosOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/explorador archivos.png"))); // NOI18N
         lblIconoExploradorArchivosOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblIconoExploradorArchivosOS.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblIconoExploradorArchivosOSMouseClicked(evt);
+            }
+        });
         panelInicioOS.add(lblIconoExploradorArchivosOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 140, 140));
 
         lblExploradorArchivoOS.setFont(new java.awt.Font("Calibri", 1, 23)); // NOI18N
@@ -240,7 +263,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblInfoSistemaOS.setText("Informacion del sistema");
         panelInicioOS.add(lblInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 320, 300, 70));
 
-        framePantallaInicioOS.getContentPane().add(panelInicioOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 540));
+        framePantallaInicioOS.getContentPane().add(panelInicioOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 510));
 
         mBarPrincipal.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(241, 241, 241), 1, true));
         mBarPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -983,7 +1006,40 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 .addContainerGap(52, Short.MAX_VALUE))
         );
 
+        ppmPersonalizar.setText("Personalizar Pantalla");
+
+        ppmItemNavbarColor.setText("Color de la barra de navegacion");
+        ppmPersonalizar.add(ppmItemNavbarColor);
+
+        ppmItemColorLetraNavbar.setText("Color de letra de la barra de navegacion");
+        ppmPersonalizar.add(ppmItemColorLetraNavbar);
+
+        ppmItemColorFondo.setText("Color del fondo de pantalla");
+        ppmPersonalizar.add(ppmItemColorFondo);
+
+        ppmItemFuente.setText("Fuente del fondo de pantalla");
+        ppmPersonalizar.add(ppmItemFuente);
+
+        ppmItemFondoImagen.setText("Imagen del fondo de pantalla");
+        ppmPersonalizar.add(ppmItemFondoImagen);
+
+        ppMenuPantalla.add(ppmPersonalizar);
+
+        ppmOpcionesUsuario.setText("Opciones de Usuario");
+
+        ppmItemCrearUsuario.setText("Crear Usuario");
+        ppmOpcionesUsuario.add(ppmItemCrearUsuario);
+
+        ppmItemEditarUsuario.setText("Editar Usuario");
+        ppmOpcionesUsuario.add(ppmItemEditarUsuario);
+
+        ppmItemEliminarUsuario.setText("Eliminar Usuario");
+        ppmOpcionesUsuario.add(ppmItemEliminarUsuario);
+
+        ppMenuPantalla.add(ppmOpcionesUsuario);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         panelInicioSesion.setPreferredSize(new java.awt.Dimension(507, 600));
         panelInicioSesion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1148,19 +1204,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mItemCrearUsuarioActionPerformed
 
     private void btnCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCrearUsuarioActionPerformed
-        if ((txtNombreCU.getText().isBlank() && txtContrasenaCU.getText().isBlank() && comboTipoCU.getSelectedIndex() == -1) || txtNombreCU.getText().isBlank() || txtContrasenaCU.getText().isBlank() || comboTipoCU.getSelectedIndex() == -1) {
-            JOptionPane.showMessageDialog(this, "No has ingresado los campos necesarios", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            if (comboTipoCU.getSelectedIndex() == 0) {
-                usuarios.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
-                modeloListaUsuarios.addElement(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
-            } else {
-                usuarios.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
-                modeloListaUsuarios.addElement(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
-            }
-            JOptionPane.showMessageDialog(this, "Usuario creado exitosamente", "Crear Usuario", JOptionPane.INFORMATION_MESSAGE);
-            dialCrearUsuario.dispose();
-        }
+        crearUsuario();
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
     private void lblIconoEditorTextoOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoOSMouseClicked
@@ -1188,6 +1232,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void mItemFondoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemFondoColorActionPerformed
         Color colorseleccionado = JColorChooser.showDialog(this, "Escoge el color del fondo", Color.BLACK);
+        panelInicioOS.setOpaque(true);
         panelInicioOS.setBackground(colorseleccionado);
     }//GEN-LAST:event_mItemFondoColorActionPerformed
 
@@ -1412,14 +1457,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mItemFondoImagenActionPerformed
 
     private void lblIconoInfoSistemaOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoInfoSistemaOSMouseClicked
-        modeloTabla.setValueAt(usuarioActual(nombre, contrasena).getNombre(), 0, 0);
-        modeloTabla.setValueAt(LocalTime.now().format(formato), 0, 1);
-        modeloTabla.setValueAt(LocalDate.now(), 0, 2);
+        actualizarTablaInfo();
         
         barraDeProgreso(dialInfoSistema);
     }//GEN-LAST:event_lblIconoInfoSistemaOSMouseClicked
 
-        JFileChooser buscador = new JFileChooser();
+    JFileChooser buscador = new JFileChooser();
     private void mItemAbrirEditorTextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemAbrirEditorTextoActionPerformed
         int opcion = buscador.showOpenDialog(this);
         
@@ -1475,18 +1518,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     
     int seleccionado = 0; 
     private void btnEliminarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioMouseClicked
-        seleccionado = listUsuariosRegistrados.getSelectedIndex();
-        if (seleccionado == -1) {
-            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (usuarios.get(seleccionado).equals(usuarioAct)) {
-            JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else {
-            int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (opcion == JOptionPane.YES_OPTION) {
-                modeloListaUsuarios.removeElementAt(seleccionado);
-                usuarios.remove(seleccionado);
-            }
-        }
+        eliminarUsuario();
     }//GEN-LAST:event_btnEliminarUsuarioMouseClicked
 
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
@@ -1502,20 +1534,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarUsuarioMouseExited
 
     private void btnEditarUsuarioMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarUsuarioMouseClicked
-        seleccionado = listUsuariosRegistrados.getSelectedIndex();
-        if (seleccionado == -1) {
-            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            barraDeProgreso(dialEditarUsuario);
-        } 
+        editarUsuario();
     }//GEN-LAST:event_btnEditarUsuarioMouseClicked
 
     private void btnAceptarEUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarEUMouseClicked
         nombre = txtNombreEU.getText();
         contrasena = txtContrasenaEU.getText();
+        
         usuarios.get(seleccionado).setNombre(nombre);
         usuarios.get(seleccionado).setContrasena(contrasena);
         modeloListaUsuarios.set(seleccionado, usuarios.get(seleccionado));
+        
+        actualizarTablaInfo();
         
         JOptionPane.showMessageDialog(this, "Usuario editado correctamente", "Editar Usuario", JOptionPane.INFORMATION_MESSAGE);
         dialEditarUsuario.dispose();
@@ -1551,10 +1581,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void mItemEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemEditarUsuarioActionPerformed
         barraDeProgreso(dialInfoSistema);
+        actualizarTablaInfo();
     }//GEN-LAST:event_mItemEditarUsuarioActionPerformed
 
     private void mItemEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemEliminarUsuarioActionPerformed
         barraDeProgreso(dialInfoSistema);
+        actualizarTablaInfo();
     }//GEN-LAST:event_mItemEliminarUsuarioActionPerformed
 
     private void btnEditarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarUsuarioMouseEntered
@@ -1574,6 +1606,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void menuDeshacerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuDeshacerMouseClicked
         txtAreaEditorTexto.setText(textoAnterior);
     }//GEN-LAST:event_menuDeshacerMouseClicked
+
+    private void lblIconoExploradorArchivosOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoExploradorArchivosOSMouseClicked
+        
+    }//GEN-LAST:event_lblIconoExploradorArchivosOSMouseClicked
+
+    private void panelInicioOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelInicioOSMouseClicked
+        if (evt.isMetaDown()) {
+            ppMenuPantalla.show(panelInicioOS, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_panelInicioOSMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1705,6 +1747,52 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         panel.repaint();
     }
     
+    public void crearUsuario() {
+        if ((txtNombreCU.getText().isBlank() && txtContrasenaCU.getText().isBlank() && comboTipoCU.getSelectedIndex() == -1) || txtNombreCU.getText().isBlank() || txtContrasenaCU.getText().isBlank() || comboTipoCU.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "No has ingresado los campos necesarios", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (comboTipoCU.getSelectedIndex() == 0) {
+                usuarios.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                modeloListaUsuarios.addElement(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
+            } else {
+                usuarios.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                modeloListaUsuarios.addElement(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
+            }
+            JOptionPane.showMessageDialog(this, "Usuario creado exitosamente", "Crear Usuario", JOptionPane.INFORMATION_MESSAGE);
+            dialCrearUsuario.dispose();
+        }
+    }
+    
+    public void editarUsuario() {
+        seleccionado = listUsuariosRegistrados.getSelectedIndex();
+        if (seleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            barraDeProgreso(dialEditarUsuario);
+        }
+    }
+    
+    public void eliminarUsuario() {
+        seleccionado = listUsuariosRegistrados.getSelectedIndex();
+        if (seleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (usuarios.get(seleccionado).equals(usuarioAct)) {
+            JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                modeloListaUsuarios.removeElementAt(seleccionado);
+                usuarios.remove(seleccionado);
+            }
+        }
+    }
+    
+    public void actualizarTablaInfo(){
+        modeloTabla.setValueAt(usuarioAct.getNombre(), 0, 0);
+        modeloTabla.setValueAt(LocalTime.now().format(formato), 0, 1);
+        modeloTabla.setValueAt(LocalDate.now(), 0, 2);
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptarEU;
     private javax.swing.JButton btnAtrasCU;
@@ -1796,6 +1884,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelEditorTexto;
     private javax.swing.JPanel panelInicioOS;
     private javax.swing.JPanel panelInicioSesion;
+    private javax.swing.JPopupMenu ppMenuPantalla;
+    private javax.swing.JMenuItem ppmItemColorFondo;
+    private javax.swing.JMenuItem ppmItemColorLetraNavbar;
+    private javax.swing.JMenuItem ppmItemCrearUsuario;
+    private javax.swing.JMenuItem ppmItemEditarUsuario;
+    private javax.swing.JMenuItem ppmItemEliminarUsuario;
+    private javax.swing.JMenuItem ppmItemFondoImagen;
+    private javax.swing.JMenuItem ppmItemFuente;
+    private javax.swing.JMenuItem ppmItemNavbarColor;
+    private javax.swing.JMenu ppmOpcionesUsuario;
+    private javax.swing.JMenu ppmPersonalizar;
     private javax.swing.JTable tablaUsuarioInfoSistema;
     private javax.swing.JToggleButton tgBtnTitulo;
     private javax.swing.JTextArea txtAreaEditorTexto;
