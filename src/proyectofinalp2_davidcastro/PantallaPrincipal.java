@@ -27,6 +27,10 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreePath;
 
 public class PantallaPrincipal extends javax.swing.JFrame {
 
@@ -39,7 +43,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
     private DefaultListModel modeloListaFuentes = new DefaultListModel();
     private DefaultListModel modeloListaUsuarios = new DefaultListModel();
-    private DefaultTableModel modeloTabla = new DefaultTableModel();
+    private DefaultTableModel modeloTablaInfoSistema = new DefaultTableModel();
     private DateTimeFormatter formato = DateTimeFormatter.ofPattern("hh:mm a");
     private Image imagen;
     
@@ -50,18 +54,19 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         
         initComponents();
         
-        tablaUsuarioInfoSistema.setModel(modeloTabla);
-        modeloTabla.addColumn("Usuario Actual");
-        modeloTabla.addColumn("Hora");
-        modeloTabla.addColumn("Fecha");
-        modeloTabla.setRowCount(1);
+        tablaUsuarioInfoSistema.setModel(modeloTablaInfoSistema);
+        modeloTablaInfoSistema.addColumn("Usuario Actual");
+        modeloTablaInfoSistema.addColumn("Hora");
+        modeloTablaInfoSistema.addColumn("Fecha");
+        modeloTablaInfoSistema.setRowCount(1);
+        
+        treeInicial((DefaultTreeModel) treeExploArchivos.getModel());
         
         modeloListaUsuarios.addElement(usuarios.get(0));
         listFuente.setModel(modeloListaFuentes);
         listUsuariosRegistrados.setModel(modeloListaUsuarios);
         agregarElementos();
         setLocationRelativeTo(null);
-        //System.out.println(usuarios);
     }
 
     /**
@@ -184,6 +189,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppmItemCrearUsuario = new javax.swing.JMenuItem();
         ppmItemEditarUsuario = new javax.swing.JMenuItem();
         ppmItemEliminarUsuario = new javax.swing.JMenuItem();
+        dialExploradorArchivos = new javax.swing.JDialog();
+        lblExploArchivosTitulo = new javax.swing.JLabel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        treeExploArchivos = new javax.swing.JTree();
+        jLabel3 = new javax.swing.JLabel();
+        ppMenuExploArchivos = new javax.swing.JPopupMenu();
+        ppmItemAgregarArchivo = new javax.swing.JMenuItem();
+        ppmItemEliminarArchivo = new javax.swing.JMenuItem();
+        ppmItemEditarArchivo = new javax.swing.JMenuItem();
+        ppmItemListarArchivos = new javax.swing.JMenuItem();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -1078,6 +1095,70 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         ppMenuPantalla.add(ppmOpcionesUsuario);
 
+        dialExploradorArchivos.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                dialExploradorArchivosWindowClosing(evt);
+            }
+        });
+        dialExploradorArchivos.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        lblExploArchivosTitulo.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lblExploArchivosTitulo.setForeground(new java.awt.Color(255, 255, 255));
+        lblExploArchivosTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblExploArchivosTitulo.setText("Explorador de Archivos");
+        dialExploradorArchivos.getContentPane().add(lblExploArchivosTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, 310, -1));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(jTable1);
+
+        dialExploradorArchivos.getContentPane().add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, 40));
+
+        treeExploArchivos.setBackground(new java.awt.Color(204, 204, 204));
+        treeExploArchivos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        treeExploArchivos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        treeExploArchivos.setForeground(new java.awt.Color(0, 0, 0));
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Explorador Archivos");
+        treeExploArchivos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        treeExploArchivos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treeExploArchivosMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(treeExploArchivos);
+
+        dialExploradorArchivos.getContentPane().add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 360, 220));
+
+        jLabel3.setBackground(new java.awt.Color(51, 51, 51));
+        jLabel3.setOpaque(true);
+        dialExploradorArchivos.getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 430));
+
+        ppmItemAgregarArchivo.setText("Agregar Archivo");
+        ppmItemAgregarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemAgregarArchivoActionPerformed(evt);
+            }
+        });
+        ppMenuExploArchivos.add(ppmItemAgregarArchivo);
+
+        ppmItemEliminarArchivo.setText("Eliminar Archivo");
+        ppMenuExploArchivos.add(ppmItemEliminarArchivo);
+
+        ppmItemEditarArchivo.setText("Editar Archivo");
+        ppMenuExploArchivos.add(ppmItemEditarArchivo);
+
+        ppmItemListarArchivos.setText("jMenuItem1");
+        ppMenuExploArchivos.add(ppmItemListarArchivos);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
@@ -1622,7 +1703,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuDeshacerMouseClicked
 
     private void lblIconoExploradorArchivosOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoExploradorArchivosOSMouseClicked
-        
+        dialExploradorArchivos.pack();
+        dialExploradorArchivos.setLocationRelativeTo(this);
+        dialExploradorArchivos.setVisible(true);
+        framePantallaInicioOS.dispose();
     }//GEN-LAST:event_lblIconoExploradorArchivosOSMouseClicked
 
     private void panelInicioOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelInicioOSMouseClicked
@@ -1666,6 +1750,22 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void ppmItemFondoImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemFondoImagenActionPerformed
         setImagenFondo();
     }//GEN-LAST:event_ppmItemFondoImagenActionPerformed
+
+    private void treeExploArchivosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeExploArchivosMouseClicked
+        if (evt.isMetaDown()) {
+            ppMenuExploArchivos.show(treeExploArchivos, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_treeExploArchivosMouseClicked
+
+    private void ppmItemAgregarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemAgregarArchivoActionPerformed
+        agregarArchivo();
+    }//GEN-LAST:event_ppmItemAgregarArchivoActionPerformed
+
+    private void dialExploradorArchivosWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_dialExploradorArchivosWindowClosing
+        framePantallaInicioOS.pack();
+        framePantallaInicioOS.setLocationRelativeTo(this);
+        framePantallaInicioOS.setVisible(true);
+    }//GEN-LAST:event_dialExploradorArchivosWindowClosing
 
     /**
      * @param args the command line arguments
@@ -1856,9 +1956,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }
     
     public void actualizarTablaInfo(){
-        modeloTabla.setValueAt(usuarioAct.getNombre(), 0, 0);
-        modeloTabla.setValueAt(LocalTime.now().format(formato), 0, 1);
-        modeloTabla.setValueAt(LocalDate.now(), 0, 2);
+        modeloTablaInfoSistema.setValueAt(usuarioAct.getNombre(), 0, 0);
+        modeloTablaInfoSistema.setValueAt(LocalTime.now().format(formato), 0, 1);
+        modeloTablaInfoSistema.setValueAt(LocalDate.now(), 0, 2);
     }
     
     public void setColorNavbar() {
@@ -1884,6 +1984,31 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         menuApagar.setForeground(colorSeleccionado);
     }
     
+    private void treeInicial(DefaultTreeModel modelo) {
+        modelo = (DefaultTreeModel) treeExploArchivos.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
+        
+        //root.removeAllChildren();
+        root.add(new DefaultMutableTreeNode("Documents"));
+        root.add(new DefaultMutableTreeNode("Dowloads"));
+        root.add(new DefaultMutableTreeNode("Pictures"));
+        root.add(new DefaultMutableTreeNode("Music"));
+        modelo.reload();
+    }
+    
+    private void agregarArchivo() {
+        DefaultTreeModel modelo = (DefaultTreeModel) treeExploArchivos.getModel();
+        TreePath selectedPath = treeExploArchivos.getSelectionPath();
+            if (selectedPath != null) {
+                String nombre = JOptionPane.showInputDialog(this, "Ingresa el nombre del archivo","Agregar Archivo", JOptionPane.INFORMATION_MESSAGE);
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+                selectedNode.add(new DefaultMutableTreeNode(nombre));
+            } else {
+                JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            modelo.reload();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptarEU;
     private javax.swing.JButton btnAtrasCU;
@@ -1905,16 +2030,21 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JDialog dialCrearUsuario;
     private javax.swing.JDialog dialEditarUsuario;
     private javax.swing.JDialog dialEditorTexto;
+    private javax.swing.JDialog dialExploradorArchivos;
     private javax.swing.JDialog dialInfoSistema;
     private javax.swing.JDialog dialPersonalizarFuente;
     private javax.swing.JDialog dialProgressBar;
     private javax.swing.JFrame framePantallaInicioOS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblColorEditorTexto;
     private javax.swing.JLabel lblColorFuente;
     private javax.swing.JLabel lblContrasena;
@@ -1924,6 +2054,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lblEditorTextoOS;
     private javax.swing.JLabel lblEstilo;
     private javax.swing.JLabel lblEstiloFuente;
+    private javax.swing.JLabel lblExploArchivosTitulo;
     private javax.swing.JLabel lblExploradorArchivoOS;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblFondoEditorTexto;
@@ -1975,19 +2106,25 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelEditorTexto;
     private javax.swing.JPanel panelInicioOS;
     private javax.swing.JPanel panelInicioSesion;
+    private javax.swing.JPopupMenu ppMenuExploArchivos;
     private javax.swing.JPopupMenu ppMenuPantalla;
+    private javax.swing.JMenuItem ppmItemAgregarArchivo;
     private javax.swing.JMenuItem ppmItemColorFondoPantalla;
     private javax.swing.JMenuItem ppmItemColorLetraNavbar;
     private javax.swing.JMenuItem ppmItemCrearUsuario;
+    private javax.swing.JMenuItem ppmItemEditarArchivo;
     private javax.swing.JMenuItem ppmItemEditarUsuario;
+    private javax.swing.JMenuItem ppmItemEliminarArchivo;
     private javax.swing.JMenuItem ppmItemEliminarUsuario;
     private javax.swing.JMenuItem ppmItemFondoImagen;
     private javax.swing.JMenuItem ppmItemFuente;
+    private javax.swing.JMenuItem ppmItemListarArchivos;
     private javax.swing.JMenuItem ppmItemNavbarColor;
     private javax.swing.JMenu ppmOpcionesUsuario;
     private javax.swing.JMenu ppmPersonalizar;
     private javax.swing.JTable tablaUsuarioInfoSistema;
     private javax.swing.JToggleButton tgBtnTitulo;
+    private javax.swing.JTree treeExploArchivos;
     private javax.swing.JTextArea txtAreaEditorTexto;
     private javax.swing.JTextField txtContrasenaCU;
     private javax.swing.JTextField txtContrasenaEU;
