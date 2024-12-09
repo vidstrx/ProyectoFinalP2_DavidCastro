@@ -1158,6 +1158,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppMenuExploArchivos.add(ppmItemEliminarArchivo);
 
         ppmItemEditarArchivo.setText("Editar Archivo");
+        ppmItemEditarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemEditarArchivoActionPerformed(evt);
+            }
+        });
         ppMenuExploArchivos.add(ppmItemEditarArchivo);
 
         ppmItemListarArchivos.setText("Listar Archivos");
@@ -1261,15 +1266,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No existe ese usuario","Error",JOptionPane.ERROR_MESSAGE);
         }
         
-        if (usuarioActual(nombre, contrasena) instanceof Invitado) {
-            menuOpcionesUsuario.setVisible(false);
-            btnEliminarUsuario.setVisible(false);
-            btnEditarUsuario.setVisible(false);
-        } else {
-            menuOpcionesUsuario.setVisible(true);
-            btnEliminarUsuario.setVisible(true);
-            btnEditarUsuario.setVisible(true);
-        }
+        menuOpcionesUsuario.setVisible(usuarioAct instanceof Administrador);
+        btnEliminarUsuario.setVisible(usuarioAct instanceof Administrador);
+        btnEditarUsuario.setVisible(usuarioAct instanceof Administrador);
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
 
     private void menuLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseClicked
@@ -1709,10 +1708,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_menuDeshacerMouseClicked
 
     private void lblIconoExploradorArchivosOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoExploradorArchivosOSMouseClicked
-        dialExploradorArchivos.pack();
-        dialExploradorArchivos.setLocationRelativeTo(this);
-        dialExploradorArchivos.setVisible(true);
-        framePantallaInicioOS.dispose();
+        barraDeProgreso(dialExploradorArchivos);
     }//GEN-LAST:event_lblIconoExploradorArchivosOSMouseClicked
 
     private void panelInicioOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelInicioOSMouseClicked
@@ -1768,14 +1764,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_ppmItemAgregarArchivoActionPerformed
 
     private void dialExploradorArchivosWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_dialExploradorArchivosWindowClosing
-        framePantallaInicioOS.pack();
-        framePantallaInicioOS.setLocationRelativeTo(this);
-        framePantallaInicioOS.setVisible(true);
+        //----------------------------------------------------------------------------------------------\\
     }//GEN-LAST:event_dialExploradorArchivosWindowClosing
 
     private void ppmItemEliminarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemEliminarArchivoActionPerformed
         eliminarArchivo();
     }//GEN-LAST:event_ppmItemEliminarArchivoActionPerformed
+
+    private void ppmItemEditarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemEditarArchivoActionPerformed
+        editarArchivo();
+    }//GEN-LAST:event_ppmItemEditarArchivoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -2156,6 +2154,26 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 }
             } else {
                 JOptionPane.showMessageDialog(this, "No puedes eliminar la raiz", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        modelo.reload();
+    }
+    
+    private void editarArchivo() {
+        DefaultTreeModel modelo = (DefaultTreeModel) treeExploArchivos.getModel();
+        TreePath selectedPath = treeExploArchivos.getSelectionPath();
+        if (selectedPath != null) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+            if (!selectedNode.isRoot()) {
+                int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas editar " + selectedNode.toString(),"Editar Archivo", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (opcion == JOptionPane.YES_OPTION) {
+                    String nombre = JOptionPane.showInputDialog(this, "Ingresa el nuevo nombre del archivo", "Editar Archivo", JOptionPane.INFORMATION_MESSAGE);
+                    selectedNode.setUserObject(nombre);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No puedes editar la raiz", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } else {
             JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
