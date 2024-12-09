@@ -1028,12 +1028,27 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppmOpcionesUsuario.setText("Opciones de Usuario");
 
         ppmItemCrearUsuario.setText("Crear Usuario");
+        ppmItemCrearUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemCrearUsuarioActionPerformed(evt);
+            }
+        });
         ppmOpcionesUsuario.add(ppmItemCrearUsuario);
 
         ppmItemEditarUsuario.setText("Editar Usuario");
+        ppmItemEditarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemEditarUsuarioActionPerformed(evt);
+            }
+        });
         ppmOpcionesUsuario.add(ppmItemEditarUsuario);
 
         ppmItemEliminarUsuario.setText("Eliminar Usuario");
+        ppmItemEliminarUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemEliminarUsuarioActionPerformed(evt);
+            }
+        });
         ppmOpcionesUsuario.add(ppmItemEliminarUsuario);
 
         ppMenuPantalla.add(ppmOpcionesUsuario);
@@ -1617,6 +1632,20 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_panelInicioOSMouseClicked
 
+    private void ppmItemCrearUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemCrearUsuarioActionPerformed
+        barraDeProgreso(dialCrearUsuario);
+    }//GEN-LAST:event_ppmItemCrearUsuarioActionPerformed
+
+    private void ppmItemEditarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemEditarUsuarioActionPerformed
+        barraDeProgreso(dialInfoSistema);
+        actualizarTablaInfo();
+    }//GEN-LAST:event_ppmItemEditarUsuarioActionPerformed
+
+    private void ppmItemEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemEliminarUsuarioActionPerformed
+        barraDeProgreso(dialInfoSistema);
+        actualizarTablaInfo();
+    }//GEN-LAST:event_ppmItemEliminarUsuarioActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1783,6 +1812,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             if (opcion == JOptionPane.YES_OPTION) {
                 modeloListaUsuarios.removeElementAt(seleccionado);
                 usuarios.remove(seleccionado);
+                JOptionPane.showMessageDialog(this, "Usuario eliminado exitosamente", "Eliminar Usuario", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
