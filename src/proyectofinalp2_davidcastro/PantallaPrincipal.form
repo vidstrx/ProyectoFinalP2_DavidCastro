@@ -1985,6 +1985,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Eliminar Archivo"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ppmItemEliminarArchivoActionPerformed"/>
+          </Events>
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="ppmItemEditarArchivo">
           <Properties>
@@ -1993,7 +1996,7 @@
         </MenuItem>
         <MenuItem class="javax.swing.JMenuItem" name="ppmItemListarArchivos">
           <Properties>
-            <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+            <Property name="text" type="java.lang.String" value="Listar Archivos"/>
           </Properties>
         </MenuItem>
       </SubComponents>

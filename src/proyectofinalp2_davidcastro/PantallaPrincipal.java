@@ -60,7 +60,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         modeloTablaInfoSistema.addColumn("Fecha");
         modeloTablaInfoSistema.setRowCount(1);
         
-        treeInicial((DefaultTreeModel) treeExploArchivos.getModel());
         
         modeloListaUsuarios.addElement(usuarios.get(0));
         listFuente.setModel(modeloListaFuentes);
@@ -1151,12 +1150,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppMenuExploArchivos.add(ppmItemAgregarArchivo);
 
         ppmItemEliminarArchivo.setText("Eliminar Archivo");
+        ppmItemEliminarArchivo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemEliminarArchivoActionPerformed(evt);
+            }
+        });
         ppMenuExploArchivos.add(ppmItemEliminarArchivo);
 
         ppmItemEditarArchivo.setText("Editar Archivo");
         ppMenuExploArchivos.add(ppmItemEditarArchivo);
 
-        ppmItemListarArchivos.setText("jMenuItem1");
+        ppmItemListarArchivos.setText("Listar Archivos");
         ppMenuExploArchivos.add(ppmItemListarArchivos);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -1251,6 +1255,8 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             
             barraDeProgreso(framePantallaInicioOS);
             dispose();
+            
+            treeInicial((DefaultTreeModel) treeExploArchivos.getModel());
         } else {
             JOptionPane.showMessageDialog(this, "No existe ese usuario","Error",JOptionPane.ERROR_MESSAGE);
         }
@@ -1767,6 +1773,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         framePantallaInicioOS.setVisible(true);
     }//GEN-LAST:event_dialExploradorArchivosWindowClosing
 
+    private void ppmItemEliminarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemEliminarArchivoActionPerformed
+        eliminarArchivo();
+    }//GEN-LAST:event_ppmItemEliminarArchivoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1800,213 +1810,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 new PantallaPrincipal().setVisible(true);
             }
         });
-    }
-    
-    private boolean verificarUsuario(String nombre, String contrasena){
-        boolean isUsuario = true;
-        for (Usuario usuario : usuarios) {
-            if (nombre.equals(usuario.getNombre()) && contrasena.equals(usuario.getContrasena())){
-                isUsuario = true;
-                break;
-            } else {
-                isUsuario = false;
-            }
-        }
-        return isUsuario;
-    }
-    
-    private void agregarElementos(){
-        for (int i = 10; i <= 84; i+=2) {
-            comboTamano.addItem(i+"");
-            comboTamanoFuente.addItem(i+"");
-        }
-        for (int i = 0; i < fuentes.length; i++) {
-            comboFuentes.addItem(fuentes[i]);
-            modeloListaFuentes.addElement(fuentes[i]);
-        }
-    }
-    
-    private Usuario usuarioActual(String nombre, String contrasena){
-        Usuario usuario = new Usuario();
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getNombre().equals(nombre) && usuarios.get(i).getContrasena().equals(contrasena)){
-                usuario = usuarios.get(i);
-                break;
-            }
-        }
-        return usuario;
-    }
-    
-    private void barraDeProgreso(JFrame frame) {
-        dialProgressBar.pack();
-        dialProgressBar.setVisible(true); 
-        dialProgressBar.setLocationRelativeTo(this);
-        Thread thread = new Thread() {
-            public void run() {
-                pBarCarga.setValue(0);
-                while (pBarCarga.getValue() < 100) {
-                    pBarCarga.setValue(pBarCarga.getValue() + 5);
-                    try {
-                        Thread.sleep(50);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (pBarCarga.getValue() == 100){
-                        dialProgressBar.setVisible(false);
-                        dialProgressBar.dispose();
-                    }
-                }
-                frame.pack();
-                frame.setLocationRelativeTo(null);
-                frame.setVisible(true);
-            }
-        };
-        thread.start();
-    }
-    
-    private void barraDeProgreso(JDialog dial) {
-        dialProgressBar.pack();
-        dialProgressBar.setVisible(true); 
-        dialProgressBar.setLocationRelativeTo(this);
-        Thread thread = new Thread() {
-            public void run() {
-                pBarCarga.setValue(0);
-                while (pBarCarga.getValue() < 100) {
-                    pBarCarga.setValue(pBarCarga.getValue() + 5);
-                    try {
-                        Thread.sleep(50);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (pBarCarga.getValue() == 100){
-                        dialProgressBar.setVisible(false);
-                        dialProgressBar.dispose();
-                    }
-                }
-                dial.pack();
-                dial.setLocationRelativeTo(null);
-                dial.setVisible(true);
-            }
-        };
-        thread.start();
-    }
-    
-    public void setImagenFondo(){
-        JFileChooser fchooser = new JFileChooser();
-        
-        String userHome = System.getProperty("user.home");
-        File rutaArchivo = new File(userHome,"Pictures");
-        
-        FileNameExtensionFilter tipo = new FileNameExtensionFilter("JPG y PNG", "png","jpg");
-        fchooser.setFileFilter(tipo);
-        fchooser.setCurrentDirectory(rutaArchivo);
-        
-        int opcion = fchooser.showOpenDialog(null);
-        if (opcion == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fchooser.getSelectedFile();
-            setFondoPanel(selectedFile.toString(), panelInicioOS);
-        }
-    }
-    
-    public void setFondoPanel(String ruta, JPanel panel){
-        panel.setOpaque(false);
-        imagen = new ImageIcon(ruta).getImage();
-        panel.repaint();
-    }
-    
-    public void crearUsuario() {
-        if ((txtNombreCU.getText().isBlank() && txtContrasenaCU.getText().isBlank() && comboTipoCU.getSelectedIndex() == -1) || txtNombreCU.getText().isBlank() || txtContrasenaCU.getText().isBlank() || comboTipoCU.getSelectedIndex() == -1) {
-            JOptionPane.showMessageDialog(this, "No has ingresado los campos necesarios", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            if (comboTipoCU.getSelectedIndex() == 0) {
-                usuarios.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
-                modeloListaUsuarios.addElement(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
-            } else {
-                usuarios.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
-                modeloListaUsuarios.addElement(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
-            }
-            JOptionPane.showMessageDialog(this, "Usuario creado exitosamente", "Crear Usuario", JOptionPane.INFORMATION_MESSAGE);
-            dialCrearUsuario.dispose();
-        }
-    }
-    
-    public void editarUsuario() {
-        seleccionado = listUsuariosRegistrados.getSelectedIndex();
-        if (seleccionado == -1) {
-            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
-        } else {
-            barraDeProgreso(dialEditarUsuario);
-        }
-    }
-    
-    public void eliminarUsuario() {
-        seleccionado = listUsuariosRegistrados.getSelectedIndex();
-        if (seleccionado == -1) {
-            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (usuarios.get(seleccionado).equals(usuarioAct)) {
-            JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        } else {
-            int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
-            if (opcion == JOptionPane.YES_OPTION) {
-                modeloListaUsuarios.removeElementAt(seleccionado);
-                usuarios.remove(seleccionado);
-                JOptionPane.showMessageDialog(this, "Usuario eliminado exitosamente", "Eliminar Usuario", JOptionPane.INFORMATION_MESSAGE);
-            }
-        }
-    }
-    
-    public void actualizarTablaInfo(){
-        modeloTablaInfoSistema.setValueAt(usuarioAct.getNombre(), 0, 0);
-        modeloTablaInfoSistema.setValueAt(LocalTime.now().format(formato), 0, 1);
-        modeloTablaInfoSistema.setValueAt(LocalDate.now(), 0, 2);
-    }
-    
-    public void setColorNavbar() {
-        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la barra de navegacion", Color.BLACK);
-        mBarPrincipal.setBackground(colorSeleccionado);
-        menuPersonalizar.setBackground(colorSeleccionado);
-        menuApagar.setBackground(colorSeleccionado);
-        menuLogout.setBackground(colorSeleccionado);
-        menuOpcionesUsuario.setBackground(colorSeleccionado);
-        colorSeleccionadoTemp = colorSeleccionado;
-    }
-    
-    public void setColorFondoPantalla() {
-        Color colorseleccionado = JColorChooser.showDialog(this, "Escoge el color del fondo", Color.BLACK);
-        panelInicioOS.setOpaque(true);
-        panelInicioOS.setBackground(colorseleccionado);
-    }
-    public void setColorLetraNavbar() {
-        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la barra de navegacion", Color.BLACK);
-        menuOpcionesUsuario.setForeground(colorSeleccionado);
-        menuPersonalizar.setForeground(colorSeleccionado);
-        menuLogout.setForeground(colorSeleccionado);
-        menuApagar.setForeground(colorSeleccionado);
-    }
-    
-    private void treeInicial(DefaultTreeModel modelo) {
-        modelo = (DefaultTreeModel) treeExploArchivos.getModel();
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
-        
-        //root.removeAllChildren();
-        root.add(new DefaultMutableTreeNode("Documents"));
-        root.add(new DefaultMutableTreeNode("Dowloads"));
-        root.add(new DefaultMutableTreeNode("Pictures"));
-        root.add(new DefaultMutableTreeNode("Music"));
-        modelo.reload();
-    }
-    
-    private void agregarArchivo() {
-        DefaultTreeModel modelo = (DefaultTreeModel) treeExploArchivos.getModel();
-        TreePath selectedPath = treeExploArchivos.getSelectionPath();
-            if (selectedPath != null) {
-                String nombre = JOptionPane.showInputDialog(this, "Ingresa el nombre del archivo","Agregar Archivo", JOptionPane.INFORMATION_MESSAGE);
-                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
-                selectedNode.add(new DefaultMutableTreeNode(nombre));
-            } else {
-                JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-            modelo.reload();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -2133,4 +1936,230 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField txtNombreEU;
     private javax.swing.JPasswordField txtPassContrasena;
     // End of variables declaration//GEN-END:variables
+
+    private boolean verificarUsuario(String nombre, String contrasena){
+        boolean isUsuario = true;
+        for (Usuario usuario : usuarios) {
+            if (nombre.equals(usuario.getNombre()) && contrasena.equals(usuario.getContrasena())){
+                isUsuario = true;
+                break;
+            } else {
+                isUsuario = false;
+            }
+        }
+        return isUsuario;
+    }
+    
+    private void agregarElementos(){
+        for (int i = 10; i <= 84; i+=2) {
+            comboTamano.addItem(i+"");
+            comboTamanoFuente.addItem(i+"");
+        }
+        for (int i = 0; i < fuentes.length; i++) {
+            comboFuentes.addItem(fuentes[i]);
+            modeloListaFuentes.addElement(fuentes[i]);
+        }
+    }
+    
+    private Usuario usuarioActual(String nombre, String contrasena){
+        Usuario usuario = new Usuario();
+        for (int i = 0; i < usuarios.size(); i++) {
+            if (usuarios.get(i).getNombre().equals(nombre) && usuarios.get(i).getContrasena().equals(contrasena)){
+                usuario = usuarios.get(i);
+                break;
+            }
+        }
+        return usuario;
+    }
+    
+    private void barraDeProgreso(JFrame frame) {
+        dialProgressBar.pack();
+        dialProgressBar.setVisible(true); 
+        dialProgressBar.setLocationRelativeTo(this);
+        Thread thread = new Thread() {
+            public void run() {
+                pBarCarga.setValue(0);
+                while (pBarCarga.getValue() < 100) {
+                    pBarCarga.setValue(pBarCarga.getValue() + 5);
+                    try {
+                        Thread.sleep(50);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (pBarCarga.getValue() == 100){
+                        dialProgressBar.setVisible(false);
+                        dialProgressBar.dispose();
+                    }
+                }
+                frame.pack();
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
+            }
+        };
+        thread.start();
+    }
+    
+    private void barraDeProgreso(JDialog dial) {
+        dialProgressBar.pack();
+        dialProgressBar.setVisible(true); 
+        dialProgressBar.setLocationRelativeTo(this);
+        Thread thread = new Thread() {
+            public void run() {
+                pBarCarga.setValue(0);
+                while (pBarCarga.getValue() < 100) {
+                    pBarCarga.setValue(pBarCarga.getValue() + 5);
+                    try {
+                        Thread.sleep(50);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (pBarCarga.getValue() == 100){
+                        dialProgressBar.setVisible(false);
+                        dialProgressBar.dispose();
+                    }
+                }
+                dial.pack();
+                dial.setLocationRelativeTo(null);
+                dial.setVisible(true);
+            }
+        };
+        thread.start();
+    }
+    
+    private  void setImagenFondo(){
+        JFileChooser fchooser = new JFileChooser();
+        
+        String userHome = System.getProperty("user.home");
+        File rutaArchivo = new File(userHome,"Pictures");
+        
+        FileNameExtensionFilter tipo = new FileNameExtensionFilter("JPG y PNG", "png","jpg");
+        fchooser.setFileFilter(tipo);
+        fchooser.setCurrentDirectory(rutaArchivo);
+        
+        int opcion = fchooser.showOpenDialog(null);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fchooser.getSelectedFile();
+            setFondoPanel(selectedFile.toString(), panelInicioOS);
+        }
+    }
+    
+    private  void setFondoPanel(String ruta, JPanel panel){
+        panel.setOpaque(false);
+        imagen = new ImageIcon(ruta).getImage();
+        panel.repaint();
+    }
+    
+    private  void crearUsuario() {
+        if ((txtNombreCU.getText().isBlank() && txtContrasenaCU.getText().isBlank() && comboTipoCU.getSelectedIndex() == -1) || txtNombreCU.getText().isBlank() || txtContrasenaCU.getText().isBlank() || comboTipoCU.getSelectedIndex() == -1) {
+            JOptionPane.showMessageDialog(this, "No has ingresado los campos necesarios", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (comboTipoCU.getSelectedIndex() == 0) {
+                usuarios.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                modeloListaUsuarios.addElement(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
+            } else {
+                usuarios.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                modeloListaUsuarios.addElement(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
+            }
+            JOptionPane.showMessageDialog(this, "Usuario creado exitosamente", "Crear Usuario", JOptionPane.INFORMATION_MESSAGE);
+            dialCrearUsuario.dispose();
+        }
+    }
+    
+    private  void editarUsuario() {
+        seleccionado = listUsuariosRegistrados.getSelectedIndex();
+        if (seleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            barraDeProgreso(dialEditarUsuario);
+        }
+    }
+    
+    private  void eliminarUsuario() {
+        seleccionado = listUsuariosRegistrados.getSelectedIndex();
+        if (seleccionado == -1) {
+            JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (usuarios.get(seleccionado).equals(usuarioAct)) {
+            JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        } else {
+            int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (opcion == JOptionPane.YES_OPTION) {
+                modeloListaUsuarios.removeElementAt(seleccionado);
+                usuarios.remove(seleccionado);
+                JOptionPane.showMessageDialog(this, "Usuario eliminado exitosamente", "Eliminar Usuario", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+    
+    private  void actualizarTablaInfo(){
+        modeloTablaInfoSistema.setValueAt(usuarioAct.getNombre(), 0, 0);
+        modeloTablaInfoSistema.setValueAt(LocalTime.now().format(formato), 0, 1);
+        modeloTablaInfoSistema.setValueAt(LocalDate.now(), 0, 2);
+    }
+    
+    private  void setColorNavbar() {
+        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la barra de navegacion", Color.BLACK);
+        mBarPrincipal.setBackground(colorSeleccionado);
+        menuPersonalizar.setBackground(colorSeleccionado);
+        menuApagar.setBackground(colorSeleccionado);
+        menuLogout.setBackground(colorSeleccionado);
+        menuOpcionesUsuario.setBackground(colorSeleccionado);
+        colorSeleccionadoTemp = colorSeleccionado;
+    }
+    
+    private  void setColorFondoPantalla() {
+        Color colorseleccionado = JColorChooser.showDialog(this, "Escoge el color del fondo", Color.BLACK);
+        panelInicioOS.setOpaque(true);
+        panelInicioOS.setBackground(colorseleccionado);
+    }
+    private void setColorLetraNavbar() {
+        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la barra de navegacion", Color.BLACK);
+        menuOpcionesUsuario.setForeground(colorSeleccionado);
+        menuPersonalizar.setForeground(colorSeleccionado);
+        menuLogout.setForeground(colorSeleccionado);
+        menuApagar.setForeground(colorSeleccionado);
+    }
+    
+    private void treeInicial(DefaultTreeModel modelo) {
+        modelo = (DefaultTreeModel) treeExploArchivos.getModel();
+        DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
+        
+        //root.removeAllChildren();
+        root.add(new DefaultMutableTreeNode("Documents"));
+        root.add(new DefaultMutableTreeNode("Dowloads"));
+        root.add(new DefaultMutableTreeNode("Pictures"));
+        root.add(new DefaultMutableTreeNode("Music"));
+        modelo.reload();
+    }
+    
+    private void agregarArchivo() {
+        DefaultTreeModel modelo = (DefaultTreeModel) treeExploArchivos.getModel();
+        TreePath selectedPath = treeExploArchivos.getSelectionPath();
+            if (selectedPath != null) {
+                String nombre = JOptionPane.showInputDialog(this, "Ingresa el nombre del archivo","Agregar Archivo", JOptionPane.INFORMATION_MESSAGE);
+                DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+                selectedNode.add(new DefaultMutableTreeNode(nombre));
+            } else {
+                JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            modelo.reload();
+    }
+    
+    private void eliminarArchivo(){
+        DefaultTreeModel modelo = (DefaultTreeModel) treeExploArchivos.getModel();
+        TreePath selectedPath = treeExploArchivos.getSelectionPath();
+        if (selectedPath != null) {
+            DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode) selectedPath.getLastPathComponent();
+            if (!selectedNode.isRoot()) {
+                int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar " + selectedNode.toString(),"Eliminar Archivo", JOptionPane.YES_NO_CANCEL_OPTION);
+                if (opcion == JOptionPane.YES_OPTION) {
+                    modelo.removeNodeFromParent(selectedNode);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "No puedes eliminar la raiz", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        modelo.reload();
+    }
 }
