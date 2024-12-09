@@ -101,9 +101,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         menuPersonalizar = new javax.swing.JMenu();
         mItemNavbarColor = new javax.swing.JMenuItem();
         mItemColorLetraNavbar = new javax.swing.JMenuItem();
-        mItemFondoColor = new javax.swing.JMenuItem();
+        mItemColorFondoPantalla = new javax.swing.JMenuItem();
         mItemFuente = new javax.swing.JMenuItem();
-        mItemFondoImagen = new javax.swing.JMenuItem();
+        mItemImagenFondo = new javax.swing.JMenuItem();
         menuLogout = new javax.swing.JMenu();
         menuApagar = new javax.swing.JMenu();
         dialCrearUsuario = new javax.swing.JDialog();
@@ -177,7 +177,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppmPersonalizar = new javax.swing.JMenu();
         ppmItemNavbarColor = new javax.swing.JMenuItem();
         ppmItemColorLetraNavbar = new javax.swing.JMenuItem();
-        ppmItemColorFondo = new javax.swing.JMenuItem();
+        ppmItemColorFondoPantalla = new javax.swing.JMenuItem();
         ppmItemFuente = new javax.swing.JMenuItem();
         ppmItemFondoImagen = new javax.swing.JMenuItem();
         ppmOpcionesUsuario = new javax.swing.JMenu();
@@ -219,13 +219,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 lblIconoEditorTextoOSMouseClicked(evt);
             }
         });
-        panelInicioOS.add(lblIconoEditorTextoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 180, 140, 140));
+        panelInicioOS.add(lblIconoEditorTextoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, 140, 140));
 
         lblEditorTextoOS.setFont(new java.awt.Font("Calibri", 1, 23)); // NOI18N
         lblEditorTextoOS.setForeground(new java.awt.Color(0, 0, 0));
         lblEditorTextoOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblEditorTextoOS.setText("Editor de Texto");
-        panelInicioOS.add(lblEditorTextoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, 230, 70));
+        panelInicioOS.add(lblEditorTextoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 340, 230, 70));
 
         lblIconoExploradorArchivosOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/explorador archivos.png"))); // NOI18N
         lblIconoExploradorArchivosOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -234,19 +234,19 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 lblIconoExploradorArchivosOSMouseClicked(evt);
             }
         });
-        panelInicioOS.add(lblIconoExploradorArchivosOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 180, 140, 140));
+        panelInicioOS.add(lblIconoExploradorArchivosOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 200, 140, 140));
 
         lblExploradorArchivoOS.setFont(new java.awt.Font("Calibri", 1, 23)); // NOI18N
         lblExploradorArchivoOS.setForeground(new java.awt.Color(0, 0, 0));
         lblExploradorArchivoOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblExploradorArchivoOS.setText("Explorador de Archivos");
-        panelInicioOS.add(lblExploradorArchivoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 320, 300, 70));
+        panelInicioOS.add(lblExploradorArchivoOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 340, 300, 70));
 
-        lblTituloOS.setFont(new java.awt.Font("Segoe UI", 1, 50)); // NOI18N
+        lblTituloOS.setFont(new java.awt.Font("Segoe UI", 1, 55)); // NOI18N
         lblTituloOS.setForeground(new java.awt.Color(0, 0, 0));
         lblTituloOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblTituloOS.setText("Pantalla de Inicio");
-        panelInicioOS.add(lblTituloOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 790, 100));
+        panelInicioOS.add(lblTituloOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 790, 100));
 
         lblIconoInfoSistemaOS.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icono info de sistema.png"))); // NOI18N
         lblIconoInfoSistemaOS.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -255,15 +255,15 @@ public class PantallaPrincipal extends javax.swing.JFrame {
                 lblIconoInfoSistemaOSMouseClicked(evt);
             }
         });
-        panelInicioOS.add(lblIconoInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 180, 140, 140));
+        panelInicioOS.add(lblIconoInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 200, 140, 140));
 
         lblInfoSistemaOS.setFont(new java.awt.Font("Calibri", 1, 23)); // NOI18N
         lblInfoSistemaOS.setForeground(new java.awt.Color(0, 0, 0));
         lblInfoSistemaOS.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblInfoSistemaOS.setText("Informacion del sistema");
-        panelInicioOS.add(lblInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 320, 300, 70));
+        panelInicioOS.add(lblInfoSistemaOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 340, 300, 70));
 
-        framePantallaInicioOS.getContentPane().add(panelInicioOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 510));
+        framePantallaInicioOS.getContentPane().add(panelInicioOS, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 960, 550));
 
         mBarPrincipal.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(241, 241, 241), 1, true));
         mBarPrincipal.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -356,16 +356,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         });
         menuPersonalizar.add(mItemColorLetraNavbar);
 
-        mItemFondoColor.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        mItemFondoColor.setForeground(new java.awt.Color(0, 0, 0));
-        mItemFondoColor.setText("Color del fondo de pantalla");
-        mItemFondoColor.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        mItemFondoColor.addActionListener(new java.awt.event.ActionListener() {
+        mItemColorFondoPantalla.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        mItemColorFondoPantalla.setForeground(new java.awt.Color(0, 0, 0));
+        mItemColorFondoPantalla.setText("Color del fondo de pantalla");
+        mItemColorFondoPantalla.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mItemColorFondoPantalla.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mItemFondoColorActionPerformed(evt);
+                mItemColorFondoPantallaActionPerformed(evt);
             }
         });
-        menuPersonalizar.add(mItemFondoColor);
+        menuPersonalizar.add(mItemColorFondoPantalla);
 
         mItemFuente.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         mItemFuente.setForeground(new java.awt.Color(0, 0, 0));
@@ -378,16 +378,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         });
         menuPersonalizar.add(mItemFuente);
 
-        mItemFondoImagen.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        mItemFondoImagen.setForeground(new java.awt.Color(0, 0, 0));
-        mItemFondoImagen.setText("Imagen del fondo de pantalla");
-        mItemFondoImagen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        mItemFondoImagen.addActionListener(new java.awt.event.ActionListener() {
+        mItemImagenFondo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        mItemImagenFondo.setForeground(new java.awt.Color(0, 0, 0));
+        mItemImagenFondo.setText("Imagen del fondo de pantalla");
+        mItemImagenFondo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        mItemImagenFondo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mItemFondoImagenActionPerformed(evt);
+                mItemImagenFondoActionPerformed(evt);
             }
         });
-        menuPersonalizar.add(mItemFondoImagen);
+        menuPersonalizar.add(mItemImagenFondo);
 
         mBarPrincipal.add(menuPersonalizar);
 
@@ -1009,18 +1009,43 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppmPersonalizar.setText("Personalizar Pantalla");
 
         ppmItemNavbarColor.setText("Color de la barra de navegacion");
+        ppmItemNavbarColor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemNavbarColorActionPerformed(evt);
+            }
+        });
         ppmPersonalizar.add(ppmItemNavbarColor);
 
         ppmItemColorLetraNavbar.setText("Color de letra de la barra de navegacion");
+        ppmItemColorLetraNavbar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemColorLetraNavbarActionPerformed(evt);
+            }
+        });
         ppmPersonalizar.add(ppmItemColorLetraNavbar);
 
-        ppmItemColorFondo.setText("Color del fondo de pantalla");
-        ppmPersonalizar.add(ppmItemColorFondo);
+        ppmItemColorFondoPantalla.setText("Color del fondo de pantalla");
+        ppmItemColorFondoPantalla.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemColorFondoPantallaActionPerformed(evt);
+            }
+        });
+        ppmPersonalizar.add(ppmItemColorFondoPantalla);
 
         ppmItemFuente.setText("Fuente del fondo de pantalla");
+        ppmItemFuente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemFuenteActionPerformed(evt);
+            }
+        });
         ppmPersonalizar.add(ppmItemFuente);
 
         ppmItemFondoImagen.setText("Imagen del fondo de pantalla");
+        ppmItemFondoImagen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ppmItemFondoImagenActionPerformed(evt);
+            }
+        });
         ppmPersonalizar.add(ppmItemFondoImagen);
 
         ppMenuPantalla.add(ppmPersonalizar);
@@ -1236,20 +1261,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     
     Color colorSeleccionadoTemp;
     private void mItemNavbarColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemNavbarColorActionPerformed
-        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la barra de navegacion", Color.BLACK);
-        mBarPrincipal.setBackground(colorSeleccionado);
-        menuPersonalizar.setBackground(colorSeleccionado);
-        menuApagar.setBackground(colorSeleccionado);
-        menuLogout.setBackground(colorSeleccionado);
-        menuOpcionesUsuario.setBackground(colorSeleccionado);
-        colorSeleccionadoTemp = colorSeleccionado;
+        setColorNavbar();
     }//GEN-LAST:event_mItemNavbarColorActionPerformed
 
-    private void mItemFondoColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemFondoColorActionPerformed
-        Color colorseleccionado = JColorChooser.showDialog(this, "Escoge el color del fondo", Color.BLACK);
-        panelInicioOS.setOpaque(true);
-        panelInicioOS.setBackground(colorseleccionado);
-    }//GEN-LAST:event_mItemFondoColorActionPerformed
+    private void mItemColorFondoPantallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemColorFondoPantallaActionPerformed
+        setColorFondoPantalla();
+    }//GEN-LAST:event_mItemColorFondoPantallaActionPerformed
 
     private void btnIniciarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseEntered
         btnIniciarSesion.setBackground(Color.decode("#444444"));
@@ -1437,11 +1454,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_framePantallaInicioOSWindowClosed
 
     private void mItemColorLetraNavbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemColorLetraNavbarActionPerformed
-        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la barra de navegacion", Color.BLACK);
-        menuOpcionesUsuario.setForeground(colorSeleccionado);
-        menuPersonalizar.setForeground(colorSeleccionado);
-        menuLogout.setForeground(colorSeleccionado);
-        menuApagar.setForeground(colorSeleccionado);
+        setColorLetraNavbar();
     }//GEN-LAST:event_mItemColorLetraNavbarActionPerformed
 
     private void tgBtnTituloItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tgBtnTituloItemStateChanged
@@ -1454,26 +1467,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tgBtnTituloItemStateChanged
 
-    private void mItemFondoImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemFondoImagenActionPerformed
-        JFileChooser fchooser = new JFileChooser();
-        
-        String userHome = System.getProperty("user.home");
-        File rutaArchivo = new File(userHome,"Pictures");
-        
-        FileNameExtensionFilter tipo = new FileNameExtensionFilter("JPG y PNG", "png","jpg");
-        fchooser.setFileFilter(tipo);
-        fchooser.setCurrentDirectory(rutaArchivo);
-        
-        int opcion = fchooser.showOpenDialog(null);
-        if (opcion == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fchooser.getSelectedFile();
-            setFondoPanel(selectedFile.toString(), panelInicioOS);
-        }
-    }//GEN-LAST:event_mItemFondoImagenActionPerformed
+    private void mItemImagenFondoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemImagenFondoActionPerformed
+        setImagenFondo();
+    }//GEN-LAST:event_mItemImagenFondoActionPerformed
 
     private void lblIconoInfoSistemaOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoInfoSistemaOSMouseClicked
         actualizarTablaInfo();
-        
         barraDeProgreso(dialInfoSistema);
     }//GEN-LAST:event_lblIconoInfoSistemaOSMouseClicked
 
@@ -1537,7 +1536,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnEliminarUsuarioMouseClicked
 
     private void btnEliminarUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioActionPerformed
-
+        //------------------------------------------------------------------------------------------\\
     }//GEN-LAST:event_btnEliminarUsuarioActionPerformed
 
     private void btnEliminarUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEliminarUsuarioMouseEntered
@@ -1646,6 +1645,28 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         actualizarTablaInfo();
     }//GEN-LAST:event_ppmItemEliminarUsuarioActionPerformed
 
+    private void ppmItemNavbarColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemNavbarColorActionPerformed
+        setColorNavbar();
+    }//GEN-LAST:event_ppmItemNavbarColorActionPerformed
+
+    private void ppmItemColorLetraNavbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemColorLetraNavbarActionPerformed
+        setColorLetraNavbar();
+    }//GEN-LAST:event_ppmItemColorLetraNavbarActionPerformed
+
+    private void ppmItemColorFondoPantallaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemColorFondoPantallaActionPerformed
+        setColorFondoPantalla();
+    }//GEN-LAST:event_ppmItemColorFondoPantallaActionPerformed
+
+    private void ppmItemFuenteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemFuenteActionPerformed
+        dialPersonalizarFuente.pack();
+        dialPersonalizarFuente.setLocationRelativeTo(this);
+        dialPersonalizarFuente.setVisible(true);
+    }//GEN-LAST:event_ppmItemFuenteActionPerformed
+
+    private void ppmItemFondoImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppmItemFondoImagenActionPerformed
+        setImagenFondo();
+    }//GEN-LAST:event_ppmItemFondoImagenActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1695,7 +1716,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }
     
     private void agregarElementos(){
-        for (int i = 10; i <= 60; i+=2) {
+        for (int i = 10; i <= 84; i+=2) {
             comboTamano.addItem(i+"");
             comboTamanoFuente.addItem(i+"");
         }
@@ -1770,6 +1791,23 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         thread.start();
     }
     
+    public void setImagenFondo(){
+        JFileChooser fchooser = new JFileChooser();
+        
+        String userHome = System.getProperty("user.home");
+        File rutaArchivo = new File(userHome,"Pictures");
+        
+        FileNameExtensionFilter tipo = new FileNameExtensionFilter("JPG y PNG", "png","jpg");
+        fchooser.setFileFilter(tipo);
+        fchooser.setCurrentDirectory(rutaArchivo);
+        
+        int opcion = fchooser.showOpenDialog(null);
+        if (opcion == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fchooser.getSelectedFile();
+            setFondoPanel(selectedFile.toString(), panelInicioOS);
+        }
+    }
+    
     public void setFondoPanel(String ruta, JPanel panel){
         panel.setOpaque(false);
         imagen = new ImageIcon(ruta).getImage();
@@ -1821,6 +1859,29 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         modeloTabla.setValueAt(usuarioAct.getNombre(), 0, 0);
         modeloTabla.setValueAt(LocalTime.now().format(formato), 0, 1);
         modeloTabla.setValueAt(LocalDate.now(), 0, 2);
+    }
+    
+    public void setColorNavbar() {
+        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la barra de navegacion", Color.BLACK);
+        mBarPrincipal.setBackground(colorSeleccionado);
+        menuPersonalizar.setBackground(colorSeleccionado);
+        menuApagar.setBackground(colorSeleccionado);
+        menuLogout.setBackground(colorSeleccionado);
+        menuOpcionesUsuario.setBackground(colorSeleccionado);
+        colorSeleccionadoTemp = colorSeleccionado;
+    }
+    
+    public void setColorFondoPantalla() {
+        Color colorseleccionado = JColorChooser.showDialog(this, "Escoge el color del fondo", Color.BLACK);
+        panelInicioOS.setOpaque(true);
+        panelInicioOS.setBackground(colorseleccionado);
+    }
+    public void setColorLetraNavbar() {
+        Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la barra de navegacion", Color.BLACK);
+        menuOpcionesUsuario.setForeground(colorSeleccionado);
+        menuPersonalizar.setForeground(colorSeleccionado);
+        menuLogout.setForeground(colorSeleccionado);
+        menuApagar.setForeground(colorSeleccionado);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1894,14 +1955,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar mBarEditorTexto;
     private javax.swing.JMenuBar mBarPrincipal;
     private javax.swing.JMenuItem mItemAbrirEditorTexto;
+    private javax.swing.JMenuItem mItemColorFondoPantalla;
     private javax.swing.JMenuItem mItemColorLetraNavbar;
     private javax.swing.JMenuItem mItemCrearUsuario;
     private javax.swing.JMenuItem mItemEditarUsuario;
     private javax.swing.JMenuItem mItemEliminarUsuario;
-    private javax.swing.JMenuItem mItemFondoColor;
-    private javax.swing.JMenuItem mItemFondoImagen;
     private javax.swing.JMenuItem mItemFuente;
     private javax.swing.JMenuItem mItemGuardarEditorTexto;
+    private javax.swing.JMenuItem mItemImagenFondo;
     private javax.swing.JMenuItem mItemNavbarColor;
     private javax.swing.JMenu menuApagar;
     private javax.swing.JMenu menuArchivoEditorTexto;
@@ -1915,7 +1976,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel panelInicioOS;
     private javax.swing.JPanel panelInicioSesion;
     private javax.swing.JPopupMenu ppMenuPantalla;
-    private javax.swing.JMenuItem ppmItemColorFondo;
+    private javax.swing.JMenuItem ppmItemColorFondoPantalla;
     private javax.swing.JMenuItem ppmItemColorLetraNavbar;
     private javax.swing.JMenuItem ppmItemCrearUsuario;
     private javax.swing.JMenuItem ppmItemEditarUsuario;
