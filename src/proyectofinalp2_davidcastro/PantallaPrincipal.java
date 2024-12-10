@@ -24,12 +24,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 
 public class PantallaPrincipal extends javax.swing.JFrame {
@@ -60,10 +58,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         modeloTablaInfoSistema.addColumn("Fecha");
         modeloTablaInfoSistema.setRowCount(1);
         
-        
         modeloListaUsuarios.addElement(usuarios.get(0));
         listFuente.setModel(modeloListaFuentes);
+        
         listUsuariosRegistrados.setModel(modeloListaUsuarios);
+        
         agregarElementos();
         setLocationRelativeTo(null);
     }
@@ -190,16 +189,14 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         ppmItemEliminarUsuario = new javax.swing.JMenuItem();
         dialExploradorArchivos = new javax.swing.JDialog();
         lblExploArchivosTitulo = new javax.swing.JLabel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        btnAtrasExploArchivos = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         treeExploArchivos = new javax.swing.JTree();
-        jLabel3 = new javax.swing.JLabel();
+        lblFondoExploArchivos = new javax.swing.JLabel();
         ppMenuExploArchivos = new javax.swing.JPopupMenu();
         ppmItemAgregarArchivo = new javax.swing.JMenuItem();
         ppmItemEliminarArchivo = new javax.swing.JMenuItem();
         ppmItemEditarArchivo = new javax.swing.JMenuItem();
-        ppmItemListarArchivos = new javax.swing.JMenuItem();
         panelInicioSesion = new javax.swing.JPanel();
         lblInicioSesion = new javax.swing.JLabel();
         lblIcono = new javax.swing.JLabel();
@@ -1094,6 +1091,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         ppMenuPantalla.add(ppmOpcionesUsuario);
 
+        dialExploradorArchivos.setModal(true);
         dialExploradorArchivos.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 dialExploradorArchivosWindowClosing(evt);
@@ -1105,26 +1103,31 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         lblExploArchivosTitulo.setForeground(new java.awt.Color(255, 255, 255));
         lblExploArchivosTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblExploArchivosTitulo.setText("Explorador de Archivos");
-        dialExploradorArchivos.getContentPane().add(lblExploArchivosTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 40, 310, -1));
+        dialExploradorArchivos.getContentPane().add(lblExploArchivosTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 30, 310, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        btnAtrasExploArchivos.setBackground(new java.awt.Color(153, 0, 0));
+        btnAtrasExploArchivos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        btnAtrasExploArchivos.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtrasExploArchivos.setText("Atras");
+        btnAtrasExploArchivos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        btnAtrasExploArchivos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                btnAtrasExploArchivosMouseEntered(evt);
             }
-        ));
-        jScrollPane6.setViewportView(jTable1);
-
-        dialExploradorArchivos.getContentPane().add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 330, -1, 40));
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                btnAtrasExploArchivosMouseExited(evt);
+            }
+        });
+        btnAtrasExploArchivos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtrasExploArchivosActionPerformed(evt);
+            }
+        });
+        dialExploradorArchivos.getContentPane().add(btnAtrasExploArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, 70, 25));
 
         treeExploArchivos.setBackground(new java.awt.Color(204, 204, 204));
         treeExploArchivos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        treeExploArchivos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        treeExploArchivos.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         treeExploArchivos.setForeground(new java.awt.Color(0, 0, 0));
         javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("Explorador Archivos");
         treeExploArchivos.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
@@ -1135,11 +1138,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(treeExploArchivos);
 
-        dialExploradorArchivos.getContentPane().add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 360, 220));
+        dialExploradorArchivos.getContentPane().add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 470, 260));
 
-        jLabel3.setBackground(new java.awt.Color(51, 51, 51));
-        jLabel3.setOpaque(true);
-        dialExploradorArchivos.getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 430));
+        lblFondoExploArchivos.setBackground(new java.awt.Color(51, 51, 51));
+        lblFondoExploArchivos.setOpaque(true);
+        dialExploradorArchivos.getContentPane().add(lblFondoExploArchivos, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 550, 390));
 
         ppmItemAgregarArchivo.setText("Agregar Archivo");
         ppmItemAgregarArchivo.addActionListener(new java.awt.event.ActionListener() {
@@ -1164,9 +1167,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             }
         });
         ppMenuExploArchivos.add(ppmItemEditarArchivo);
-
-        ppmItemListarArchivos.setText("Listar Archivos");
-        ppMenuExploArchivos.add(ppmItemListarArchivos);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -1281,7 +1281,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private void btnAtrasEditorTextoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasEditorTextoMouseClicked
         dialEditorTexto.dispose();
-        //framePantallaInicioOS.setVisible(true);
     }//GEN-LAST:event_btnAtrasEditorTextoMouseClicked
 
     private void comboTamanoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_comboTamanoItemStateChanged
@@ -1775,6 +1774,18 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         editarArchivo();
     }//GEN-LAST:event_ppmItemEditarArchivoActionPerformed
 
+    private void btnAtrasExploArchivosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasExploArchivosActionPerformed
+        dialExploradorArchivos.dispose();
+    }//GEN-LAST:event_btnAtrasExploArchivosActionPerformed
+
+    private void btnAtrasExploArchivosMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasExploArchivosMouseEntered
+        btnAtrasExploArchivos.setBackground(Color.decode("#5b0000"));
+    }//GEN-LAST:event_btnAtrasExploArchivosMouseEntered
+
+    private void btnAtrasExploArchivosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasExploArchivosMouseExited
+        btnAtrasExploArchivos.setBackground(Color.decode("#990000"));
+    }//GEN-LAST:event_btnAtrasExploArchivosMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -1815,6 +1826,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnAtrasCU;
     private javax.swing.JButton btnAtrasEU;
     private javax.swing.JButton btnAtrasEditorTexto;
+    private javax.swing.JButton btnAtrasExploArchivos;
     private javax.swing.JButton btnColorEditorTexto;
     private javax.swing.JButton btnColorFuente;
     private javax.swing.JButton btnCrearUsuario;
@@ -1838,14 +1850,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JFrame framePantallaInicioOS;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblColorEditorTexto;
     private javax.swing.JLabel lblColorFuente;
     private javax.swing.JLabel lblContrasena;
@@ -1859,6 +1868,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lblExploradorArchivoOS;
     private javax.swing.JLabel lblFondo;
     private javax.swing.JLabel lblFondoEditorTexto;
+    private javax.swing.JLabel lblFondoExploArchivos;
     private javax.swing.JLabel lblFondoFuente;
     private javax.swing.JLabel lblFondoInfoSistema;
     private javax.swing.JLabel lblFuente;
@@ -1919,7 +1929,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem ppmItemEliminarUsuario;
     private javax.swing.JMenuItem ppmItemFondoImagen;
     private javax.swing.JMenuItem ppmItemFuente;
-    private javax.swing.JMenuItem ppmItemListarArchivos;
     private javax.swing.JMenuItem ppmItemNavbarColor;
     private javax.swing.JMenu ppmOpcionesUsuario;
     private javax.swing.JMenu ppmPersonalizar;
