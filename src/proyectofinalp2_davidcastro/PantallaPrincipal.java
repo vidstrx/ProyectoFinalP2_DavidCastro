@@ -9,9 +9,13 @@ import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -38,19 +42,20 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     
     // Mis Atributos
     private String [] fuentes;
-    private ArrayList<Usuario> usuarios = new ArrayList<Usuario>();
+    private ArrayList<Usuario> usuariosConfigs = new ArrayList<Usuario>();
     private DefaultListModel modeloListaFuentes = new DefaultListModel();
     private DefaultListModel modeloListaUsuarios = new DefaultListModel();
     private DefaultTableModel modeloTablaInfoSistema = new DefaultTableModel();
     private DateTimeFormatter formato = DateTimeFormatter.ofPattern("hh:mm a");
     private Image imagen;
+    File rutaArchivo = new File("UsuarioConfigs.configs");
+    //-------------------------------------------------------------------------------------------------------------------------\\
     
     public PantallaPrincipal() {
-        
-        usuarios.add(new Administrador("admin", "1234"));
         fuentes = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
         
         initComponents();
+        setLocationRelativeTo(null);
         
         tablaUsuarioInfoSistema.setModel(modeloTablaInfoSistema);
         modeloTablaInfoSistema.addColumn("Usuario Actual");
@@ -58,13 +63,19 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         modeloTablaInfoSistema.addColumn("Fecha");
         modeloTablaInfoSistema.setRowCount(1);
         
-        modeloListaUsuarios.addElement(usuarios.get(0));
         listFuente.setModel(modeloListaFuentes);
         
-        listUsuariosRegistrados.setModel(modeloListaUsuarios);
+        treeInicial((DefaultTreeModel) treeExploArchivos.getModel());
         
         agregarElementos();
-        setLocationRelativeTo(null);
+        
+        usuariosConfigs = cargarUsuarioConfigs(rutaArchivo.toString());
+        if (usuariosConfigs.isEmpty()) {
+            usuariosConfigs.add(new Administrador("admin", "1234", lblEditorTextoOS.getFont().getSize(), lblEditorTextoOS.getFont().getStyle(), lblEditorTextoOS.getFont().getFontName(), lblEditorTextoOS.getForeground(), lblTituloOS.getFont().getSize(), lblTituloOS.getFont().getStyle(), lblTituloOS.getFont().getFontName(), lblTituloOS.getForeground(), mBarPrincipal.getBackground(), menuOpcionesUsuario.getForeground(), panelInicioOS.getBackground(), null));
+            System.out.println("estaba empty");
+        }
+        actualizarListaUsuarios();
+        listUsuariosRegistrados.setModel(modeloListaUsuarios);
     }
 
     /**
@@ -208,10 +219,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         txtPassContrasena = new javax.swing.JPasswordField();
         lblFondo = new javax.swing.JLabel();
 
+        framePantallaInicioOS.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         framePantallaInicioOS.setResizable(false);
         framePantallaInicioOS.addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                framePantallaInicioOSWindowClosed(evt);
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                framePantallaInicioOSWindowClosing(evt);
             }
         });
         framePantallaInicioOS.getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1170,6 +1182,11 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         panelInicioSesion.setPreferredSize(new java.awt.Dimension(507, 600));
         panelInicioSesion.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1249,26 +1266,38 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     
     
     String nombre = "", contrasena = ""; 
-    Usuario usuarioAct = new Usuario();
+    Usuario usuarioActConfigs = new Usuario();
     private void btnIniciarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseClicked
         nombre = txtNombre.getText();
         contrasena = new String(txtPassContrasena.getPassword());
         if (verificarUsuario(nombre, contrasena)){
-            usuarioAct = usuarioActual(nombre, contrasena);
+            usuarioActConfigs = usuarioActual(nombre, contrasena);
             txtNombre.setText("");
             txtPassContrasena.setText("");
             
+            if (usuarioActConfigs.getRutaImagen() == null) {
+                panelInicioOS.setOpaque(true);
+                panelInicioOS.setBackground(usuarioActConfigs.getColorFondo());
+            } else {
+               /*para la imagen sera mejor intentar con la ruta de la imagen que se selecciono y guardarla como string en la clase usuario(osea quitar el
+                atributo image) y ponerlo como rutaImagen de tipo String, luego mandar a llamar el metodo setFondoPanel(panelInicioOS) y con la ruta
+                que se guardo en el usuario, entonces ese metodo pondra la imagen en el panel*/
+                setFondoPanel(panelInicioOS);
+            }
+            // seteando las configuraciones del usuario que entro (osea el usuario actual)
+            setUsuarioConfigs();
+
             barraDeProgreso(framePantallaInicioOS);
             dispose();
             
-            treeInicial((DefaultTreeModel) treeExploArchivos.getModel());
         } else {
             JOptionPane.showMessageDialog(this, "No existe ese usuario","Error",JOptionPane.ERROR_MESSAGE);
         }
         
-        menuOpcionesUsuario.setVisible(usuarioAct instanceof Administrador);
-        btnEliminarUsuario.setVisible(usuarioAct instanceof Administrador);
-        btnEditarUsuario.setVisible(usuarioAct instanceof Administrador);
+        menuOpcionesUsuario.setVisible(usuarioActConfigs instanceof Administrador);
+        btnEliminarUsuario.setVisible(usuarioActConfigs instanceof Administrador);
+        btnEditarUsuario.setVisible(usuarioActConfigs instanceof Administrador);
+        ppmOpcionesUsuario.setVisible(usuarioActConfigs instanceof Administrador);
     }//GEN-LAST:event_btnIniciarSesionMouseClicked
 
     private void menuLogoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseClicked
@@ -1333,18 +1362,17 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCrearUsuarioActionPerformed
 
     private void lblIconoEditorTextoOSMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblIconoEditorTextoOSMouseClicked
-        //framePantallaInicioOS.dispose();
         barraDeProgreso(dialEditorTexto);
     }//GEN-LAST:event_lblIconoEditorTextoOSMouseClicked
 
     private void menuApagarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseClicked
         int opcion = JOptionPane.showConfirmDialog(this, "¿Estas seguro que quieres apagar el sistema operativo?", "Advertencia", JOptionPane.YES_NO_CANCEL_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
+            guardarUsuarioConfigs(rutaArchivo.toString());
             System.exit(0);
         }
     }//GEN-LAST:event_menuApagarMouseClicked
     
-    Color colorSeleccionadoTemp;
     private void mItemNavbarColorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemNavbarColorActionPerformed
         setColorNavbar();
     }//GEN-LAST:event_mItemNavbarColorActionPerformed
@@ -1360,38 +1388,6 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void btnIniciarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnIniciarSesionMouseExited
         btnIniciarSesion.setBackground(Color.BLACK);
     }//GEN-LAST:event_btnIniciarSesionMouseExited
-
-    private void menuOpcionesUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuOpcionesUsuarioMouseEntered
-        menuOpcionesUsuario.setBackground(Color.decode("#898989"));
-    }//GEN-LAST:event_menuOpcionesUsuarioMouseEntered
-
-    private void menuOpcionesUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuOpcionesUsuarioMouseExited
-        menuOpcionesUsuario.setBackground(colorSeleccionadoTemp);
-    }//GEN-LAST:event_menuOpcionesUsuarioMouseExited
-
-    private void menuPersonalizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPersonalizarMouseEntered
-        menuPersonalizar.setBackground(Color.decode("#898989"));
-    }//GEN-LAST:event_menuPersonalizarMouseEntered
-
-    private void menuPersonalizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPersonalizarMouseExited
-        menuPersonalizar.setBackground(colorSeleccionadoTemp);
-    }//GEN-LAST:event_menuPersonalizarMouseExited
-
-    private void menuLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseEntered
-        menuLogout.setBackground(Color.decode("#898989"));
-    }//GEN-LAST:event_menuLogoutMouseEntered
-
-    private void menuLogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseExited
-        menuLogout.setBackground(colorSeleccionadoTemp);
-    }//GEN-LAST:event_menuLogoutMouseExited
-
-    private void menuApagarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseEntered
-        menuApagar.setBackground(Color.decode("#898989"));
-    }//GEN-LAST:event_menuApagarMouseEntered
-
-    private void menuApagarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseExited
-        menuApagar.setBackground(colorSeleccionadoTemp);
-    }//GEN-LAST:event_menuApagarMouseExited
 
     private void comboTipoCUMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_comboTipoCUMouseEntered
         comboTipoCU.setBackground(Color.decode("#898989"));
@@ -1443,10 +1439,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
             if (tgBtnTitulo.isSelected()) {
                 lblTituloOS.setFont(new Font(nombreTitulo, estiloTitulo, tamano));
+                usuarioActConfigs.setFuenteLabelTitulo(nombreTitulo);
+                usuarioActConfigs.setEstiloLabelTitulo(estiloTitulo);
+                usuarioActConfigs.setTamanoLabelTitulo(tamano);
             } else {
                 lblEditorTextoOS.setFont(new Font(nombre, estilo, tamano));
                 lblExploradorArchivoOS.setFont(new Font(nombre, estilo, tamano));
                 lblInfoSistemaOS.setFont(new Font(nombre, estilo, tamano));
+                usuarioActConfigs.setFuenteLabel(nombre);
+                usuarioActConfigs.setEstiloLabel(estilo);
+                usuarioActConfigs.setTamanoLabel(tamano);
             }
         }
     }//GEN-LAST:event_comboTamanoFuenteItemStateChanged
@@ -1471,10 +1473,12 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la pantalla de inicio", Color.BLACK);
         if (tgBtnTitulo.isSelected()) {
             lblTituloOS.setForeground(colorSeleccionado);
+            usuarioActConfigs.setColorLabelTitulo(colorSeleccionado);
         } else {
             lblEditorTextoOS.setForeground(colorSeleccionado);
             lblExploradorArchivoOS.setForeground(colorSeleccionado);
             lblInfoSistemaOS.setForeground(colorSeleccionado);
+            usuarioActConfigs.setColorLabel(colorSeleccionado);
         }
     }//GEN-LAST:event_btnColorFuenteMouseClicked
 
@@ -1485,10 +1489,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         
         if (tgBtnTitulo.isSelected()) {
             lblTituloOS.setFont(new Font(nombre, estiloTitulo, tamanoTitulo));
+            usuarioActConfigs.setFuenteLabelTitulo(nombre);
+            usuarioActConfigs.setEstiloLabelTitulo(estiloTitulo);
+            usuarioActConfigs.setTamanoLabelTitulo(tamanoTitulo);
         } else {
             lblEditorTextoOS.setFont(new Font(nombre, estilo, tamano));
             lblExploradorArchivoOS.setFont(new Font(nombre, estilo, tamano));
             lblInfoSistemaOS.setFont(new Font(nombre, estilo, tamano));
+            usuarioActConfigs.setFuenteLabel(nombre);
+            usuarioActConfigs.setEstiloLabel(estilo);
+            usuarioActConfigs.setTamanoLabel(tamano);
         }
     }//GEN-LAST:event_listFuenteValueChanged
 
@@ -1501,42 +1511,48 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             switch (estilo){
             case 1:
                 lblTituloOS.setFont(new Font(nombreTitulo,Font.PLAIN,tamanoTitulo));
+                usuarioActConfigs.setEstiloLabelTitulo(Font.PLAIN);
                 break;
             case 2:
                 lblTituloOS.setFont(new Font(nombreTitulo,Font.BOLD,tamanoTitulo));
+                usuarioActConfigs.setEstiloLabelTitulo(Font.BOLD);
                 break;
             case 3:
                 lblTituloOS.setFont(new Font(nombreTitulo,Font.ITALIC,tamanoTitulo));
+                usuarioActConfigs.setEstiloLabelTitulo(Font.ITALIC);
                 break;
             default:
                 break;
             }
+            usuarioActConfigs.setFuenteLabelTitulo(nombreTitulo);
+            usuarioActConfigs.setTamanoLabelTitulo(tamanoTitulo);
         } else {
             switch (estilo){
                 case 1:
                     lblEditorTextoOS.setFont(new Font(nombre, Font.PLAIN, tamano));
                     lblExploradorArchivoOS.setFont(new Font(nombre, Font.PLAIN, tamano));
                     lblInfoSistemaOS.setFont(new Font(nombre, Font.PLAIN, tamano));
+                    usuarioActConfigs.setEstiloLabel(Font.PLAIN);
                     break;
                 case 2:
                     lblEditorTextoOS.setFont(new Font(nombre, Font.BOLD, tamano));
                     lblExploradorArchivoOS.setFont(new Font(nombre, Font.BOLD, tamano));
                     lblInfoSistemaOS.setFont(new Font(nombre, Font.BOLD, tamano));
+                    usuarioActConfigs.setEstiloLabel(Font.BOLD);
                     break;
                 case 3:
                     lblEditorTextoOS.setFont(new Font(nombre, Font.ITALIC, tamano));
                     lblExploradorArchivoOS.setFont(new Font(nombre, Font.ITALIC, tamano));
                     lblInfoSistemaOS.setFont(new Font(nombre, Font.ITALIC, tamano));
+                    usuarioActConfigs.setEstiloLabel(Font.ITALIC);
                     break;
                 default:
                     break;
             }
+            usuarioActConfigs.setFuenteLabel(nombre);
+            usuarioActConfigs.setTamanoLabel(tamano);           
         }
     }//GEN-LAST:event_comboEstiloFuenteItemStateChanged
-
-    private void framePantallaInicioOSWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_framePantallaInicioOSWindowClosed
-        //-----------------------------------------------------------------------------------------------------\\
-    }//GEN-LAST:event_framePantallaInicioOSWindowClosed
 
     private void mItemColorLetraNavbarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mItemColorLetraNavbarActionPerformed
         setColorLetraNavbar();
@@ -1639,10 +1655,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void btnAceptarEUMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAceptarEUMouseClicked
         nombre = txtNombreEU.getText();
         contrasena = txtContrasenaEU.getText();
-        
-        usuarios.get(seleccionado).setNombre(nombre);
-        usuarios.get(seleccionado).setContrasena(contrasena);
-        modeloListaUsuarios.set(seleccionado, usuarios.get(seleccionado));
+
+        usuariosConfigs.get(seleccionado).setNombre(nombre);
+        usuariosConfigs.get(seleccionado).setContrasena(contrasena);
+        modeloListaUsuarios.set(seleccionado, usuariosConfigs.get(seleccionado));
         
         actualizarTablaInfo();
         
@@ -1785,6 +1801,46 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     private void btnAtrasExploArchivosMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAtrasExploArchivosMouseExited
         btnAtrasExploArchivos.setBackground(Color.decode("#990000"));
     }//GEN-LAST:event_btnAtrasExploArchivosMouseExited
+
+    private void framePantallaInicioOSWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_framePantallaInicioOSWindowClosing
+        guardarUsuarioConfigs(rutaArchivo.toString());
+    }//GEN-LAST:event_framePantallaInicioOSWindowClosing
+
+    private void menuOpcionesUsuarioMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuOpcionesUsuarioMouseEntered
+        menuOpcionesUsuario.setBackground(Color.decode("#898989"));
+    }//GEN-LAST:event_menuOpcionesUsuarioMouseEntered
+
+    private void menuOpcionesUsuarioMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuOpcionesUsuarioMouseExited
+        menuOpcionesUsuario.setBackground(usuarioActConfigs.getColorNavbar());
+    }//GEN-LAST:event_menuOpcionesUsuarioMouseExited
+
+    private void menuPersonalizarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPersonalizarMouseEntered
+        menuPersonalizar.setBackground(Color.decode("#898989"));
+    }//GEN-LAST:event_menuPersonalizarMouseEntered
+
+    private void menuPersonalizarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuPersonalizarMouseExited
+        menuPersonalizar.setBackground(usuarioActConfigs.getColorNavbar());
+    }//GEN-LAST:event_menuPersonalizarMouseExited
+
+    private void menuLogoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseEntered
+        menuLogout.setBackground(Color.decode("#898989"));
+    }//GEN-LAST:event_menuLogoutMouseEntered
+
+    private void menuLogoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuLogoutMouseExited
+        menuLogout.setBackground(usuarioActConfigs.getColorNavbar());
+    }//GEN-LAST:event_menuLogoutMouseExited
+
+    private void menuApagarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseEntered
+        menuApagar.setBackground(Color.decode("#898989"));
+    }//GEN-LAST:event_menuApagarMouseEntered
+
+    private void menuApagarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuApagarMouseExited
+        menuApagar.setBackground(usuarioActConfigs.getColorNavbar());
+    }//GEN-LAST:event_menuApagarMouseExited
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        guardarUsuarioConfigs(rutaArchivo.toString());
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments
@@ -1946,7 +2002,7 @@ public class PantallaPrincipal extends javax.swing.JFrame {
 
     private boolean verificarUsuario(String nombre, String contrasena){
         boolean isUsuario = true;
-        for (Usuario usuario : usuarios) {
+        for (Usuario usuario : usuariosConfigs) {
             if (nombre.equals(usuario.getNombre()) && contrasena.equals(usuario.getContrasena())){
                 isUsuario = true;
                 break;
@@ -1970,9 +2026,9 @@ public class PantallaPrincipal extends javax.swing.JFrame {
     
     private Usuario usuarioActual(String nombre, String contrasena){
         Usuario usuario = new Usuario();
-        for (int i = 0; i < usuarios.size(); i++) {
-            if (usuarios.get(i).getNombre().equals(nombre) && usuarios.get(i).getContrasena().equals(contrasena)){
-                usuario = usuarios.get(i);
+        for (int i = 0; i < usuariosConfigs.size(); i++) {
+            if (usuariosConfigs.get(i).getNombre().equals(nombre) && usuariosConfigs.get(i).getContrasena().equals(contrasena)){
+                usuario = usuariosConfigs.get(i);
                 break;
             }
         }
@@ -2033,26 +2089,30 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         thread.start();
     }
     
+        File selectedFile = new File("");
     private  void setImagenFondo(){
         JFileChooser fchooser = new JFileChooser();
         
         String userHome = System.getProperty("user.home");
-        File rutaArchivo = new File(userHome,"Pictures");
+        File ruta = new File(userHome,"Pictures");
         
         FileNameExtensionFilter tipo = new FileNameExtensionFilter("JPG y PNG", "png","jpg");
         fchooser.setFileFilter(tipo);
-        fchooser.setCurrentDirectory(rutaArchivo);
+        fchooser.setCurrentDirectory(ruta);
         
         int opcion = fchooser.showOpenDialog(null);
         if (opcion == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fchooser.getSelectedFile();
-            setFondoPanel(selectedFile.toString(), panelInicioOS);
+            selectedFile = fchooser.getSelectedFile();
+            usuarioActConfigs.setRutaImagen(selectedFile.toString());
+            setFondoPanel(panelInicioOS);
         }
     }
     
-    private  void setFondoPanel(String ruta, JPanel panel){
+    private  void setFondoPanel(JPanel panel){
+        //Color colorAnterior = panel.getBackground();
+        usuarioActConfigs.setColorFondo(null);
         panel.setOpaque(false);
-        imagen = new ImageIcon(ruta).getImage();
+        imagen = new ImageIcon(usuarioActConfigs.getRutaImagen()).getImage();
         panel.repaint();
     }
     
@@ -2061,10 +2121,10 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No has ingresado los campos necesarios", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             if (comboTipoCU.getSelectedIndex() == 0) {
-                usuarios.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                usuariosConfigs.add(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText(), 23, Font.BOLD, "Calibri", Color.BLACK, 55, Font.BOLD, "Segoe UI", Color.BLACK, Color.decode("#EEEEEE"), Color.BLACK, Color.decode("#999999"), null));
                 modeloListaUsuarios.addElement(new Administrador(txtNombreCU.getText(), txtContrasenaCU.getText()));
             } else {
-                usuarios.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
+                usuariosConfigs.add(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText(), 23, Font.BOLD, "Calibri", Color.BLACK, 55, Font.BOLD, "Segoe UI", Color.BLACK, Color.decode("#EEEEEE"), Color.BLACK, Color.decode("#999999"), null));
                 modeloListaUsuarios.addElement(new Invitado(txtNombreCU.getText(), txtContrasenaCU.getText()));
             }
             JOptionPane.showMessageDialog(this, "Usuario creado exitosamente", "Crear Usuario", JOptionPane.INFORMATION_MESSAGE);
@@ -2085,20 +2145,20 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         seleccionado = listUsuariosRegistrados.getSelectedIndex();
         if (seleccionado == -1) {
             JOptionPane.showMessageDialog(this, "No has seleccionado un usuario\nSelecciona un usuario de la lista", "Error", JOptionPane.ERROR_MESSAGE);
-        } else if (usuarios.get(seleccionado).equals(usuarioAct)) {
+        } else if (usuariosConfigs.get(seleccionado).equals(usuarioActConfigs)) {
             JOptionPane.showMessageDialog(this, "No puedes eliminar el usuario en el que estas actualmente", "Advertencia", JOptionPane.WARNING_MESSAGE);
         } else {
             int opcion = JOptionPane.showConfirmDialog(this, "Estas seguro que deseas eliminar a " + ((Usuario) modeloListaUsuarios.getElementAt(seleccionado)).getNombre() , "Eliminar Usuario", JOptionPane.YES_NO_CANCEL_OPTION);
             if (opcion == JOptionPane.YES_OPTION) {
                 modeloListaUsuarios.removeElementAt(seleccionado);
-                usuarios.remove(seleccionado);
+                usuariosConfigs.remove(seleccionado);
                 JOptionPane.showMessageDialog(this, "Usuario eliminado exitosamente", "Eliminar Usuario", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
     
     private  void actualizarTablaInfo(){
-        modeloTablaInfoSistema.setValueAt(usuarioAct.getNombre(), 0, 0);
+        modeloTablaInfoSistema.setValueAt(usuarioActConfigs.getNombre(), 0, 0);
         modeloTablaInfoSistema.setValueAt(LocalTime.now().format(formato), 0, 1);
         modeloTablaInfoSistema.setValueAt(LocalDate.now(), 0, 2);
     }
@@ -2110,13 +2170,16 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         menuApagar.setBackground(colorSeleccionado);
         menuLogout.setBackground(colorSeleccionado);
         menuOpcionesUsuario.setBackground(colorSeleccionado);
-        colorSeleccionadoTemp = colorSeleccionado;
+        usuarioActConfigs.setColorNavbar(colorSeleccionado);
     }
     
     private  void setColorFondoPantalla() {
         Color colorseleccionado = JColorChooser.showDialog(this, "Escoge el color del fondo", Color.BLACK);
         panelInicioOS.setOpaque(true);
         panelInicioOS.setBackground(colorseleccionado);
+        usuarioActConfigs.setColorFondo(colorseleccionado);
+        usuarioActConfigs.setRutaImagen(null);
+        
     }
     private void setColorLetraNavbar() {
         Color colorSeleccionado = JColorChooser.showDialog(this, "Escoge el color de la letra de la barra de navegacion", Color.BLACK);
@@ -2124,13 +2187,13 @@ public class PantallaPrincipal extends javax.swing.JFrame {
         menuPersonalizar.setForeground(colorSeleccionado);
         menuLogout.setForeground(colorSeleccionado);
         menuApagar.setForeground(colorSeleccionado);
+        usuarioActConfigs.setColorLetraNavbar(colorSeleccionado);
     }
     
     private void treeInicial(DefaultTreeModel modelo) {
         modelo = (DefaultTreeModel) treeExploArchivos.getModel();
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) modelo.getRoot();
         
-        //root.removeAllChildren();
         root.add(new DefaultMutableTreeNode("Documents"));
         root.add(new DefaultMutableTreeNode("Dowloads"));
         root.add(new DefaultMutableTreeNode("Pictures"));
@@ -2188,5 +2251,56 @@ public class PantallaPrincipal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Debes Seleccionar un nodo", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
         modelo.reload();
+    }
+    
+    private void guardarUsuarioConfigs(String rutaArchivo) {
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(rutaArchivo));
+            oos.writeObject(usuariosConfigs);
+            oos.close();
+        } catch (Exception e) {
+            System.out.println("Hubo error al guardar la informacion\n" + e);
+        }
+    }
+    
+    private ArrayList<Usuario> cargarUsuarioConfigs(String rutaArchivo) {
+        try {
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream(rutaArchivo));
+            return (ArrayList <Usuario>) ois.readObject();
+        } catch (Exception e) {
+            System.out.println("Hubo un error al cargar la informacion\n" + e);
+            return new ArrayList();
+        }
+    }
+    
+    private void setUsuarioConfigs() {
+        // seteando colores de las labels del usuario actual
+        lblEditorTextoOS.setForeground(usuarioActConfigs.getColorLabel()); lblExploradorArchivoOS.setForeground(usuarioActConfigs.getColorLabel()); lblInfoSistemaOS.setForeground(usuarioActConfigs.getColorLabel());
+        lblTituloOS.setForeground(usuarioActConfigs.getColorLabelTitulo());
+        
+        // seteando las fuentes de las labels del usuario actual
+        lblEditorTextoOS.setFont(new Font(usuarioActConfigs.getFuenteLabel(), usuarioActConfigs.getEstiloLabel(), usuarioActConfigs.getTamanoLabel()));
+        lblExploradorArchivoOS.setFont(new Font(usuarioActConfigs.getFuenteLabel(), usuarioActConfigs.getEstiloLabel(), usuarioActConfigs.getTamanoLabel()));
+        lblInfoSistemaOS.setFont(new Font(usuarioActConfigs.getFuenteLabel(), usuarioActConfigs.getEstiloLabel(), usuarioActConfigs.getTamanoLabel()));
+        lblTituloOS.setFont(new Font(usuarioActConfigs.getFuenteLabelTitulo(), usuarioActConfigs.getEstiloLabelTitulo(), usuarioActConfigs.getTamanoLabelTitulo()));
+        
+        // seteando el color del fondo de la navbar del usuario actual
+        mBarPrincipal.setBackground(usuarioActConfigs.getColorNavbar());
+        menuPersonalizar.setBackground(usuarioActConfigs.getColorNavbar());
+        menuApagar.setBackground(usuarioActConfigs.getColorNavbar());
+        menuLogout.setBackground(usuarioActConfigs.getColorNavbar());
+        menuOpcionesUsuario.setBackground(usuarioActConfigs.getColorNavbar());
+        
+        // seteando el color de las letras de la navbar del usuario actual
+        menuOpcionesUsuario.setForeground(usuarioActConfigs.getColorLetraNavbar());
+        menuPersonalizar.setForeground(usuarioActConfigs.getColorLetraNavbar());
+        menuLogout.setForeground(usuarioActConfigs.getColorLetraNavbar());
+        menuApagar.setForeground(usuarioActConfigs.getColorLetraNavbar());
+    }
+    
+    private void actualizarListaUsuarios() {
+        for (Usuario usuario : usuariosConfigs) {
+            modeloListaUsuarios.addElement(usuario);
+        }
     }
 }

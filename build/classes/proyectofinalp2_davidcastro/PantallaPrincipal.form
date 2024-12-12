@@ -4,10 +4,11 @@
   <NonVisualComponents>
     <Container class="javax.swing.JFrame" name="framePantallaInicioOS">
       <Properties>
+        <Property name="defaultCloseOperation" type="int" value="3"/>
         <Property name="resizable" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="framePantallaInicioOSWindowClosed"/>
+        <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="framePantallaInicioOSWindowClosing"/>
       </Events>
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout">
@@ -24,7 +25,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="panelInicioOSMouseClicked"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;    &#xa;    @Override&#xa;    public void paintComponent(Graphics g) {&#xa;        int width = this.getWidth();&#xa;        int height = this.getHeight();&#xa;        if (imagen != null) {&#xa;            g.drawImage(imagen, 0, 0, width, height, null);&#xa;        }&#xa;        super.paintComponent(g);&#xa;    }&#xa;}"/>
+            <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JPanel(){&#xa;&#xa;    @Override&#xa;    public void paintComponent(Graphics g) {&#xa;        int width = this.getWidth();&#xa;        int height = this.getHeight();&#xa;        if (imagen != null) {&#xa;            g.drawImage(imagen, 0, 0, width, height, null);&#xa;        }&#xa;        super.paintComponent(g);&#xa;    }&#xa;}"/>
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
@@ -2014,6 +2015,9 @@
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
